@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/TherapyTools.Client.Web.Blazor/">
+    <Project Path="TherapyTools.Client.Web.Blazor/TherapyTools.Client.Web.Blazor.Client/TherapyTools.Client.Web.Blazor.Client.csproj" />
+    <Project Path="TherapyTools.Client.Web.Blazor/TherapyTools.Client.Web.Blazor/TherapyTools.Client.Web.Blazor.csproj" />
+  </Folder>
+  <Project Path="TherapyTools.Client.Shared/TherapyTools.Client.Shared.csproj" />
+</Solution>

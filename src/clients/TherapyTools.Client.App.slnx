@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TherapyTools.Client.App.Maui/TherapyTools.Client.App.Maui.csproj" />
+  <Project Path="TherapyTools.Client.Shared/TherapyTools.Client.Shared.csproj" />
+</Solution>
