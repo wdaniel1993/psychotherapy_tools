@@ -1,5 +1,5 @@
 namespace TherapyTools.Domain.Common.Cqrs;
 public interface ICommandHandler<TCommand> where TCommand : IDomainCommand
 {
-    IEnumerable<IDomainEvent> Handle(TCommand command);
+    IAsyncEnumerable<IDomainEvent> Handle(TCommand command);
 }

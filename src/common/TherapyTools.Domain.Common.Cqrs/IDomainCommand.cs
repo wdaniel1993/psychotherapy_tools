@@ -1,3 +1,3 @@
 namespace TherapyTools.Domain.Common.Cqrs;
 
-public interface IDomainCommand {}
+public interface IDomainCommand { }
