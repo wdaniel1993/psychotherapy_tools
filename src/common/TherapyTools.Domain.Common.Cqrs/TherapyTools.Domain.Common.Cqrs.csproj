@@ -6,7 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TherapyTools.Domain.Common.Cqrs\TherapyTools.Domain.Common.Cqrs.csproj" />
-  </ItemGroup>
 </Project>
