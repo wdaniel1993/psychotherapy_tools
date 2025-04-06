@@ -1,3 +1,4 @@
 <Solution>
+    <Project Path="../common/TherapyTools.Domain.TherapyManagement/TherapyTools.Domain.TherapyManagement.csproj" />
     <Project Path="TherapyTools.Server.Grpc/TherapyTools.Server.Grpc.csproj" />
 </Solution>
