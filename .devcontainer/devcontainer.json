@@ -15,7 +15,8 @@
 				"dancheg97.grpc-clicker",
 				"ms-azuretools.vscode-docker",
 				"ms-azuretools.vscode-dapr",
-				"ms-dotnettools.csdevkit"
+				"ms-dotnettools.csdevkit",
+				"bierner.markdown-mermaid"
 			]
 		},
 		"features": {
