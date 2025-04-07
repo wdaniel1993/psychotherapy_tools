@@ -22,5 +22,7 @@
 		"features": {
 			"azure-cli": "latest"
 		}
-	}
+	},
+	"onCreateCommand": "dotnet new install Aspire.ProjectTemplates::9.1.0 --force",
+    "postStartCommand": "dotnet dev-certs https --trust"
 }
