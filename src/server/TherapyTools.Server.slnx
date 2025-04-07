@@ -3,6 +3,11 @@
         <Project Path="Aspire/TherapyTools.Aspire.AppHost/TherapyTools.Aspire.AppHost.csproj" />
         <Project Path="Aspire/TherapyTools.Aspire.ServiceDefaults/TherapyTools.Aspire.ServiceDefaults.csproj" />
     </Folder>
+    <Folder Name="/Dapr/" />
+    <Folder Name="/Dapr/TherapyManagement/">
+        <Project Path="Dapr/TherapyManagement/TherapyTools.Dapr.TherapyManagement.Actors/TherapyTools.Dapr.TherapyManagement.Actors.csproj" />
+        <Project Path="Dapr/TherapyManagement/TherapyTools.Dapr.TherapyManagement.Interfaces/TherapyTools.Dapr.TherapyManagement.Interfaces.csproj" />
+    </Folder>
     <Folder Name="/Domain/">
         <Project Path="../common/TherapyTools.Domain.Common.Cqrs/TherapyTools.Domain.Common.Cqrs.csproj" />
         <Project Path="../common/TherapyTools.Domain.TherapyManagement/TherapyTools.Domain.TherapyManagement.csproj" />

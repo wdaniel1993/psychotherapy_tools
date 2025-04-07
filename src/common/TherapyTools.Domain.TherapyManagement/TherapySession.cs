@@ -3,6 +3,8 @@ using TherapyTools.Domain.TherapyManagement.ValueObjects;
 
 namespace TherapyTools.Domain.TherapyManagement;
 
+public interface ITherapySessionCommand : IDomainCommand { }
+
 public enum TherapySessionStatus
 {
     Unconfirmed,
@@ -69,8 +71,8 @@ public record TherapySessionCompleted(Guid Id, SessionNotes Notes) : IDomainEven
 public record TherapySessionNotesUpdates(Guid Id, SessionNotes Notes) : IDomainEvent;
 public record TherapySessionCanceled(Guid Id) : IDomainEvent;
 
-public record ScheduleTherapySessionCommand(Guid Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : IDomainCommand;
-public record RescheduleTherapySessionCommand(Guid Id, TimeSlot NewSlot) : IDomainCommand;
-public record CancelTherapySessionCommand(Guid Id) : IDomainCommand;
-public record CompleteTherapySessionCommand(Guid Id, SessionNotes Notes) : IDomainCommand;
-public record UpdateTherapySessionNotesCommand(Guid Id, SessionNotes Notes) : IDomainCommand;
+public record ScheduleTherapySessionCommand(Guid Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : ITherapySessionCommand;
+public record RescheduleTherapySessionCommand(Guid Id, TimeSlot NewSlot) : ITherapySessionCommand;
+public record CancelTherapySessionCommand(Guid Id) : ITherapySessionCommand;
+public record CompleteTherapySessionCommand(Guid Id, SessionNotes Notes) : ITherapySessionCommand;
+public record UpdateTherapySessionNotesCommand(Guid Id, SessionNotes Notes) : ITherapySessionCommand;
