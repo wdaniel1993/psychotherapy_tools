@@ -4,9 +4,9 @@ namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapySession;
 
 public class CancelTherapySessionCommandHandler : ICommandHandler<CancelTherapySessionCommand>
 {
-    private readonly IEventStore _eventStore;
+    private readonly IEventStore<TherapySessionId> _eventStore;
 
-    public CancelTherapySessionCommandHandler(IEventStore eventStore)
+    public CancelTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore)
     {
         _eventStore = eventStore;
     }

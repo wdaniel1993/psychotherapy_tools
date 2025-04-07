@@ -1,5 +1,4 @@
 using TherapyTools.Domain.Common.Cqrs;
-using TherapyTools.Domain.TherapyManagement.ValueObjects;
 
 namespace TherapyTools.Domain.TherapyManagement;
 
@@ -11,9 +10,22 @@ public enum TherapyPlanStatus
     Discarded
 }
 
+public readonly record struct TherapyPlanId(Guid Id) : IConvertTo<Guid>
+{
+    public static TherapyPlanId New() => new(Guid.NewGuid());
+    public static TherapyPlanId From(Guid id) => new(id);
+    public readonly Guid To() => Id;
+}
+
+public readonly record struct TherapyPlanDescription(string Description);
+public readonly record struct Goal (string Name, string Description);
+public readonly record struct GoalList(IReadOnlyList<Goal> Goals) {
+    public static GoalList Empty => new([]);
+};
+
 public record TherapyPlanState(
-    IReadOnlyList<Goal> Goals,
-    string Description,
+    GoalList GoalList,
+    TherapyPlanDescription Description,
     TherapyPlanStatus Status
 );
 
@@ -24,7 +36,7 @@ public static class TherapyPlanAggregate
         {
             TherapyPlanCreated e => state with
             {
-                Goals = e.Goals,
+                GoalList = e.GoalList,
                 Description = e.Description,
                 Status = TherapyPlanStatus.Draft
             },
@@ -36,24 +48,24 @@ public static class TherapyPlanAggregate
 
     public static TherapyPlanState InitialState() =>
         new(
-            [],
-            string.Empty,
+            GoalList.Empty,
+            new TherapyPlanDescription(string.Empty),
             TherapyPlanStatus.Draft
         );
 
     public static TherapyPlanState Replay(IEnumerable<IDomainEvent> events)
         => events.Aggregate(InitialState(), Apply);
 
-    public static async Task<TherapyPlanState> GetCurrentState(IEventStore eventStore, Guid id)
+    public static async Task<TherapyPlanState> GetCurrentState(IEventStore<TherapyPlanId> eventStore, TherapyPlanId id)
         => Replay(await eventStore.GetEvents(id));
 }
 
-public record TherapyPlanCreated(Guid Id, IReadOnlyList<Goal> Goals, string Description) : IDomainEvent;
-public record TherapyPlanActivated(Guid Id) : IDomainEvent;
-public record TherapyPlanCompleted(Guid Id) : IDomainEvent;
-public record TherapyPlanDiscard(Guid Id) : IDomainEvent;
+public record TherapyPlanCreated(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : IDomainEvent;
+public record TherapyPlanActivated(TherapyPlanId Id) : IDomainEvent;
+public record TherapyPlanCompleted(TherapyPlanId Id) : IDomainEvent;
+public record TherapyPlanDiscard(TherapyPlanId Id) : IDomainEvent;
 
-public record CreateTherapyPlanCommand(Guid Id, IReadOnlyList<Goal> Goals, string Description) : IDomainCommand;
-public record ActivateTherapyPlanCommand(Guid Id) : IDomainCommand;
-public record CompleteTherapyPlanCommand(Guid Id) : IDomainCommand;
-public record DiscardTherapyPlanCommand(Guid Id) : IDomainCommand;
+public record CreateTherapyPlanCommand(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : IDomainCommand;
+public record ActivateTherapyPlanCommand(TherapyPlanId Id) : IDomainCommand;
+public record CompleteTherapyPlanCommand(TherapyPlanId Id) : IDomainCommand;
+public record DiscardTherapyPlanCommand(TherapyPlanId Id) : IDomainCommand;

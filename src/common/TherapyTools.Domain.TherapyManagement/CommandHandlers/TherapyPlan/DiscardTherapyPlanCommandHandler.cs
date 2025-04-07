@@ -4,9 +4,9 @@ namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapyPlan;
 
 public class DiscardTherapyPlanCommandHandler : ICommandHandler<DiscardTherapyPlanCommand>
 {
-    private readonly IEventStore _eventStore;
+    private readonly IEventStore<TherapyPlanId> _eventStore;
 
-    public DiscardTherapyPlanCommandHandler(IEventStore eventStore)
+    public DiscardTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore)
     {
         _eventStore = eventStore;
     }
