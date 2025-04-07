@@ -4,9 +4,9 @@ namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapySession;
 
 public class UpdateTherapySessionNotesCommandHandler : ICommandHandler<UpdateTherapySessionNotesCommand>
 {
-    private readonly IEventStore _eventStore;
+    private readonly IEventStore<TherapySessionId> _eventStore;
 
-    public UpdateTherapySessionNotesCommandHandler(IEventStore eventStore)
+    public UpdateTherapySessionNotesCommandHandler(IEventStore<TherapySessionId> eventStore)
     {
         _eventStore = eventStore;
     }

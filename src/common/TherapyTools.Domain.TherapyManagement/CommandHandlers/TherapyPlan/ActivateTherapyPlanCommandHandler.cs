@@ -4,9 +4,9 @@ namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapyPlan;
 
 public class ActivateTherapyPlanCommandHandler : ICommandHandler<ActivateTherapyPlanCommand>
 {
-    private readonly IEventStore _eventStore;
+    private readonly IEventStore<TherapyPlanId> _eventStore;
 
-    public ActivateTherapyPlanCommandHandler(IEventStore eventStore)
+    public ActivateTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore)
     {
         _eventStore = eventStore;
     }

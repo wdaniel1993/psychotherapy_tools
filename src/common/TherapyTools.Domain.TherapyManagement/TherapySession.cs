@@ -1,5 +1,5 @@
 using TherapyTools.Domain.Common.Cqrs;
-using TherapyTools.Domain.TherapyManagement.ValueObjects;
+using TherapyTools.Domain.TherapyManagement.Shared;
 
 namespace TherapyTools.Domain.TherapyManagement;
 
@@ -19,6 +19,15 @@ public enum TherapySessionType
     Group,
     Family
 }
+
+public readonly record struct TherapySessionId(Guid Id) : IConvertTo<Guid>
+{
+    public static TherapySessionId New() => new(Guid.NewGuid());
+    public static TherapySessionId From(Guid id) => new(id);
+    public Guid To() => Id;
+}
+
+public readonly record struct SessionNotes (string Notes);
 
 public record TherapySessionState(
     TimeSlot SessionTimeSlot,
@@ -61,18 +70,18 @@ public static class TherapySessionAggregate
     public static TherapySessionState Replay(IEnumerable<IDomainEvent> events)
         => events.Aggregate(InitialState(), Apply);
 
-    public static async Task<TherapySessionState> GetCurrentState(IEventStore eventStore, Guid id)
+    public static async Task<TherapySessionState> GetCurrentState(IEventStore<TherapySessionId> eventStore, TherapySessionId id)
         => Replay(await eventStore.GetEvents(id));
 }
 
-public record TherapySessionScheduled(Guid Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : IDomainEvent;
-public record TherapySessionRescheduled(Guid Id, TimeSlot NewSlot) : IDomainEvent;
-public record TherapySessionCompleted(Guid Id, SessionNotes Notes) : IDomainEvent;
-public record TherapySessionNotesUpdates(Guid Id, SessionNotes Notes) : IDomainEvent;
-public record TherapySessionCanceled(Guid Id) : IDomainEvent;
+public record TherapySessionScheduled(TherapySessionId Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : IDomainEvent;
+public record TherapySessionRescheduled(TherapySessionId Id, TimeSlot NewSlot) : IDomainEvent;
+public record TherapySessionCompleted(TherapySessionId Id, SessionNotes Notes) : IDomainEvent;
+public record TherapySessionNotesUpdates(TherapySessionId Id, SessionNotes Notes) : IDomainEvent;
+public record TherapySessionCanceled(TherapySessionId Id) : IDomainEvent;
 
-public record ScheduleTherapySessionCommand(Guid Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : ITherapySessionCommand;
-public record RescheduleTherapySessionCommand(Guid Id, TimeSlot NewSlot) : ITherapySessionCommand;
-public record CancelTherapySessionCommand(Guid Id) : ITherapySessionCommand;
-public record CompleteTherapySessionCommand(Guid Id, SessionNotes Notes) : ITherapySessionCommand;
-public record UpdateTherapySessionNotesCommand(Guid Id, SessionNotes Notes) : ITherapySessionCommand;
+public record ScheduleTherapySessionCommand(TherapySessionId Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : ITherapySessionCommand;
+public record RescheduleTherapySessionCommand(TherapySessionId Id, TimeSlot NewSlot) : ITherapySessionCommand;
+public record CancelTherapySessionCommand(TherapySessionId Id) : ITherapySessionCommand;
+public record CompleteTherapySessionCommand(TherapySessionId Id, SessionNotes Notes) : ITherapySessionCommand;
+public record UpdateTherapySessionNotesCommand(TherapySessionId Id, SessionNotes Notes) : ITherapySessionCommand;

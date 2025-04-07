@@ -1,4 +1,4 @@
-namespace TherapyTools.Domain.TherapyManagement.ValueObjects;
+namespace TherapyTools.Domain.TherapyManagement.Shared;
 
 public record struct TimeSlot{
 
