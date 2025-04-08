@@ -3,8 +3,6 @@ using TherapyTools.Domain.TherapyManagement.Shared;
 
 namespace TherapyTools.Domain.TherapyManagement;
 
-public interface ITherapySessionCommand : IDomainCommand { }
-
 public enum TherapySessionStatus
 {
     Unconfirmed,
@@ -20,11 +18,11 @@ public enum TherapySessionType
     Family
 }
 
-public readonly record struct TherapySessionId(Guid Id) : IConvertTo<Guid>
+public readonly record struct TherapySessionId(Guid Id) : IAggregateId
 {
     public static TherapySessionId New() => new(Guid.NewGuid());
     public static TherapySessionId From(Guid id) => new(id);
-    public Guid To() => Id;
+    public Guid ToGuid() => Id;
 }
 
 public readonly record struct SessionNotes (string Notes);
@@ -80,8 +78,8 @@ public record TherapySessionCompleted(TherapySessionId Id, SessionNotes Notes) :
 public record TherapySessionNotesUpdates(TherapySessionId Id, SessionNotes Notes) : IDomainEvent;
 public record TherapySessionCanceled(TherapySessionId Id) : IDomainEvent;
 
-public record ScheduleTherapySessionCommand(TherapySessionId Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : ITherapySessionCommand;
-public record RescheduleTherapySessionCommand(TherapySessionId Id, TimeSlot NewSlot) : ITherapySessionCommand;
-public record CancelTherapySessionCommand(TherapySessionId Id) : ITherapySessionCommand;
-public record CompleteTherapySessionCommand(TherapySessionId Id, SessionNotes Notes) : ITherapySessionCommand;
-public record UpdateTherapySessionNotesCommand(TherapySessionId Id, SessionNotes Notes) : ITherapySessionCommand;
+public record ScheduleTherapySessionCommand(TherapySessionId Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : AggregateCommand<TherapySessionId>(Id);
+public record RescheduleTherapySessionCommand(TherapySessionId Id, TimeSlot NewSlot) : AggregateCommand<TherapySessionId>(Id);
+public record CancelTherapySessionCommand(TherapySessionId Id) : AggregateCommand<TherapySessionId>(Id);
+public record CompleteTherapySessionCommand(TherapySessionId Id, SessionNotes Notes) : AggregateCommand<TherapySessionId>(Id);
+public record UpdateTherapySessionNotesCommand(TherapySessionId Id, SessionNotes Notes) : AggregateCommand<TherapySessionId>(Id);

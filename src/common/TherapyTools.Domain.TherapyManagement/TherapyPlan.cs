@@ -2,6 +2,7 @@ using TherapyTools.Domain.Common.Cqrs;
 
 namespace TherapyTools.Domain.TherapyManagement;
 
+
 public enum TherapyPlanStatus
 {
     Draft,
@@ -10,11 +11,11 @@ public enum TherapyPlanStatus
     Discarded
 }
 
-public readonly record struct TherapyPlanId(Guid Id) : IConvertTo<Guid>
+public readonly record struct TherapyPlanId(Guid Id) : IAggregateId
 {
     public static TherapyPlanId New() => new(Guid.NewGuid());
     public static TherapyPlanId From(Guid id) => new(id);
-    public readonly Guid To() => Id;
+    public readonly Guid ToGuid() => Id;
 }
 
 public readonly record struct TherapyPlanDescription(string Description);
@@ -65,7 +66,7 @@ public record TherapyPlanActivated(TherapyPlanId Id) : IDomainEvent;
 public record TherapyPlanCompleted(TherapyPlanId Id) : IDomainEvent;
 public record TherapyPlanDiscard(TherapyPlanId Id) : IDomainEvent;
 
-public record CreateTherapyPlanCommand(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : IDomainCommand;
-public record ActivateTherapyPlanCommand(TherapyPlanId Id) : IDomainCommand;
-public record CompleteTherapyPlanCommand(TherapyPlanId Id) : IDomainCommand;
-public record DiscardTherapyPlanCommand(TherapyPlanId Id) : IDomainCommand;
+public record CreateTherapyPlanCommand(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : AggregateCommand<TherapyPlanId>(Id);
+public record ActivateTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);
+public record CompleteTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);
+public record DiscardTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);
