@@ -25,10 +25,11 @@ public readonly record struct GoalList(IReadOnlyList<Goal> Goals) {
 };
 
 public record TherapyPlanState(
+    TherapyPlanId Id,
     GoalList GoalList,
     TherapyPlanDescription Description,
     TherapyPlanStatus Status
-);
+) : AggregateState<TherapyPlanId>(Id);
 
 public static class TherapyPlanAggregate
 {
@@ -49,6 +50,7 @@ public static class TherapyPlanAggregate
 
     public static TherapyPlanState InitialState() =>
         new(
+            TherapyPlanId.New(),
             GoalList.Empty,
             new TherapyPlanDescription(string.Empty),
             TherapyPlanStatus.Draft
@@ -61,10 +63,10 @@ public static class TherapyPlanAggregate
         => Replay(await eventStore.GetEvents(id));
 }
 
-public record TherapyPlanCreated(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : IDomainEvent;
-public record TherapyPlanActivated(TherapyPlanId Id) : IDomainEvent;
-public record TherapyPlanCompleted(TherapyPlanId Id) : IDomainEvent;
-public record TherapyPlanDiscard(TherapyPlanId Id) : IDomainEvent;
+public record TherapyPlanCreated(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : AggregateDomainEvent<TherapyPlanId>(Id);
+public record TherapyPlanActivated(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
+public record TherapyPlanCompleted(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
+public record TherapyPlanDiscard(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
 
 public record CreateTherapyPlanCommand(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : AggregateCommand<TherapyPlanId>(Id);
 public record ActivateTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);

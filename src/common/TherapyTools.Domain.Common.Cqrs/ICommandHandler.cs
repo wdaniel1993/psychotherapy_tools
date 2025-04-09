@@ -1,5 +1,14 @@
 namespace TherapyTools.Domain.Common.Cqrs;
-public interface ICommandHandler<TCommand> where TCommand : IDomainCommand
+public interface ICommandHandler<TCommand, TState> where TCommand : IDomainCommand
 {
-    IAsyncEnumerable<IDomainEvent> Handle(TCommand command);
+    IAsyncEnumerable<IDomainEvent> Handle(TCommand command, TState state);
 }
+
+public interface IAggregateCommandHandler<TCommand, TAggregateId, TAggregateState> : ICommandHandler<TCommand, TAggregateState>
+    where TCommand : IAggregateCommand<TAggregateId>
+    where TAggregateId : IAggregateId
+    where TAggregateState : AggregateState<TAggregateId>
+{ }
+
+public interface IMulipleAggregateCommandHandler : ICommandHandler<MultiAggregateCommand, IEnumerable<AggregateState<IAggregateId>>>
+{ }

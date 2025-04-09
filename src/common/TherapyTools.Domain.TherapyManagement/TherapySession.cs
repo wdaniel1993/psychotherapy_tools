@@ -28,11 +28,12 @@ public readonly record struct TherapySessionId(Guid Id) : IAggregateId
 public readonly record struct SessionNotes (string Notes);
 
 public record TherapySessionState(
+    TherapySessionId Id,
     TimeSlot SessionTimeSlot,
     TherapySessionType Type,
     SessionNotes Notes,
     TherapySessionStatus Status
-);
+) :  AggregateState<TherapySessionId>(Id);
 
 public static class TherapySessionAggregate
 {
@@ -59,6 +60,7 @@ public static class TherapySessionAggregate
 
     public static TherapySessionState InitialState() => 
         new(
+            TherapySessionId.New(),
             new TimeSlot(DateTime.MinValue, DateTime.MaxValue),
             TherapySessionType.Individual,
             new SessionNotes(string.Empty),
@@ -72,11 +74,11 @@ public static class TherapySessionAggregate
         => Replay(await eventStore.GetEvents(id));
 }
 
-public record TherapySessionScheduled(TherapySessionId Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : IDomainEvent;
-public record TherapySessionRescheduled(TherapySessionId Id, TimeSlot NewSlot) : IDomainEvent;
-public record TherapySessionCompleted(TherapySessionId Id, SessionNotes Notes) : IDomainEvent;
-public record TherapySessionNotesUpdates(TherapySessionId Id, SessionNotes Notes) : IDomainEvent;
-public record TherapySessionCanceled(TherapySessionId Id) : IDomainEvent;
+public record TherapySessionScheduled(TherapySessionId Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : AggregateDomainEvent<TherapySessionId>(Id);
+public record TherapySessionRescheduled(TherapySessionId Id, TimeSlot NewSlot) : AggregateDomainEvent<TherapySessionId>(Id);
+public record TherapySessionCompleted(TherapySessionId Id, SessionNotes Notes) : AggregateDomainEvent<TherapySessionId>(Id);
+public record TherapySessionNotesUpdates(TherapySessionId Id, SessionNotes Notes) : AggregateDomainEvent<TherapySessionId>(Id);
+public record TherapySessionCanceled(TherapySessionId Id) : AggregateDomainEvent<TherapySessionId>(Id);
 
 public record ScheduleTherapySessionCommand(TherapySessionId Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : AggregateCommand<TherapySessionId>(Id);
 public record RescheduleTherapySessionCommand(TherapySessionId Id, TimeSlot NewSlot) : AggregateCommand<TherapySessionId>(Id);

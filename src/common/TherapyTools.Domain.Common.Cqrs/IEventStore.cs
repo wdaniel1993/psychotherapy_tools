@@ -1,7 +1,8 @@
 namespace TherapyTools.Domain.Common.Cqrs;
 
-public interface IEventStore<TIdentifier>
+public interface IEventStore<TAggregateId>
+    where TAggregateId : IAggregateId
 {
-    Task Save(IDomainEvent domainEvent);
-    Task<IEnumerable<IDomainEvent>> GetEvents(TIdentifier aggregateId);
+    Task Save(IAggregateDomainEvent<TAggregateId> domainEvent);
+    Task<IEnumerable<IDomainEvent>> GetEvents(TAggregateId aggregateId);
 }

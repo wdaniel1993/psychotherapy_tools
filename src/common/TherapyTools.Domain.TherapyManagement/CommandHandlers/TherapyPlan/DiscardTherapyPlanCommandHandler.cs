@@ -2,19 +2,11 @@ using TherapyTools.Domain.Common.Cqrs;
 
 namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapyPlan;
 
-public class DiscardTherapyPlanCommandHandler : ICommandHandler<DiscardTherapyPlanCommand>
+public class DiscardTherapyPlanCommandHandler : IAggregateCommandHandler<DiscardTherapyPlanCommand, TherapyPlanId, TherapyPlanState>
 {
-    private readonly IEventStore<TherapyPlanId> _eventStore;
-
-    public DiscardTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore)
+    public async IAsyncEnumerable<IDomainEvent> Handle(DiscardTherapyPlanCommand command, TherapyPlanState state)
     {
-        _eventStore = eventStore;
-    }
-
-    public async IAsyncEnumerable<IDomainEvent> Handle(DiscardTherapyPlanCommand command)
-    {
-        var currentState = await TherapyPlanAggregate.GetCurrentState(_eventStore, command.Id);
-        if (currentState.Status == TherapyPlanStatus.Completed)
+        if (state.Status == TherapyPlanStatus.Completed)
             throw new InvalidOperationException("Therapy plan cannot be discarded after completion.");
         yield return new TherapyPlanDiscard(command.Id);
     }

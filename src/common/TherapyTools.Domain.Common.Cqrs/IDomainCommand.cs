@@ -11,3 +11,8 @@ public abstract record AggregateCommand<TAggregateId>(TAggregateId Id) : IAggreg
     where TAggregateId : IAggregateId { 
     public TAggregateId AggregateId => Id;
 }
+
+public abstract record MultiAggregateCommand(IEnumerable<IAggregateId> Ids) : IDomainCommand
+{
+    public IEnumerable<IAggregateId> AggregateIds => Ids;
+}
