@@ -48,7 +48,7 @@ public static class TherapySessionAggregate
                 Status = TherapySessionStatus.Scheduled
             },
             TherapySessionRescheduled e => state with { SessionTimeSlot = e.NewSlot },
-            TherapySessionCanceled e => state with { Status = TherapySessionStatus.Canceled },
+            TherapySessionCanceled _ => state with { Status = TherapySessionStatus.Canceled },
             TherapySessionCompleted e => state with
             {
                 Notes = e.Notes,

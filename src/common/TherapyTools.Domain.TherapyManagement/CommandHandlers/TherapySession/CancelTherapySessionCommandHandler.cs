@@ -2,22 +2,15 @@ using TherapyTools.Domain.Common.Cqrs;
 
 namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapySession;
 
-public class CancelTherapySessionCommandHandler : ICommandHandler<CancelTherapySessionCommand>
+public class CancelTherapySessionCommandHandler : IAggregateCommandHandler<CancelTherapySessionCommand, TherapySessionId, TherapySessionState>
 {
-    private readonly IEventStore<TherapySessionId> _eventStore;
-
-    public CancelTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore)
+    public async IAsyncEnumerable<IDomainEvent> Handle(CancelTherapySessionCommand command, TherapySessionState state)
     {
-        _eventStore = eventStore;
-    }
-    public async IAsyncEnumerable<IDomainEvent> Handle(CancelTherapySessionCommand command)
-    {
-        var currentState = await TherapySessionAggregate.GetCurrentState(_eventStore, command.Id);
-        if (currentState.Status == TherapySessionStatus.Canceled)
+        if (state.Status == TherapySessionStatus.Canceled)
             throw new InvalidOperationException("Cannot cancel a session that is already canceled.");
-        if(currentState.Status == TherapySessionStatus.Done)
+        if (state.Status == TherapySessionStatus.Done)
             throw new InvalidOperationException("Cannot cancel a session that is already done.");
-        if (currentState.Status != TherapySessionStatus.Scheduled)
+        if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot cancel a session that is not scheduled.");
         yield return new TherapySessionCanceled(command.Id);
     }

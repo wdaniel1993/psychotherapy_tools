@@ -42,9 +42,9 @@ public static class TherapyPlanAggregate
                 Description = e.Description,
                 Status = TherapyPlanStatus.Draft
             },
-            TherapyPlanActivated e => state with { Status = TherapyPlanStatus.Active },
-            TherapyPlanCompleted e => state with { Status = TherapyPlanStatus.Completed },
-            TherapyPlanDiscard e => state with { Status = TherapyPlanStatus.Discarded },
+            TherapyPlanActivated _ => state with { Status = TherapyPlanStatus.Active },
+            TherapyPlanCompleted _ => state with { Status = TherapyPlanStatus.Completed },
+            TherapyPlanDiscard _ => state with { Status = TherapyPlanStatus.Discarded },
             _ => state
         };
 

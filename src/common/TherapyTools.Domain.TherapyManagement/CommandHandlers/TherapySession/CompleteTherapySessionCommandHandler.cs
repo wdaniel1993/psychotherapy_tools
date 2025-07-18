@@ -2,21 +2,13 @@ using TherapyTools.Domain.Common.Cqrs;
 
 namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapySession;
 
-public class CompleteTherapySessionCommandHandler : ICommandHandler<CompleteTherapySessionCommand>
+public class CompleteTherapySessionCommandHandler : IAggregateCommandHandler<CompleteTherapySessionCommand, TherapySessionId, TherapySessionState>
 {
-    private readonly IEventStore<TherapySessionId> _eventStore;
-
-    public CompleteTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore)
+    public async IAsyncEnumerable<IDomainEvent> Handle(CompleteTherapySessionCommand command, TherapySessionState state)
     {
-        _eventStore = eventStore;
-    }
-
-    public async IAsyncEnumerable<IDomainEvent> Handle(CompleteTherapySessionCommand command)
-    {
-        var currentState = await TherapySessionAggregate.GetCurrentState(_eventStore, command.Id);
-        if (currentState.Status == TherapySessionStatus.Done)
+        if (state.Status == TherapySessionStatus.Done)
             throw new InvalidOperationException("Cannot complete a session that is already done.");
-        if (currentState.Status != TherapySessionStatus.Scheduled)
+        if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot complete a session that is not scheduled.");
         yield return new TherapySessionCompleted(command.Id, command.Notes);
     }
