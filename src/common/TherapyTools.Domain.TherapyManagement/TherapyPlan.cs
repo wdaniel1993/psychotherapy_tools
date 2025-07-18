@@ -1,4 +1,4 @@
-using TherapyTools.Domain.Common.Cqrs;
+using TherapyTools.Domain.Common.Interfaces;
 
 namespace TherapyTools.Domain.TherapyManagement;
 
@@ -15,7 +15,7 @@ public readonly record struct TherapyPlanId(Guid Id) : IAggregateId
 {
     public static TherapyPlanId New() => new(Guid.NewGuid());
     public static TherapyPlanId From(Guid id) => new(id);
-    public readonly Guid ToGuid() => Id;
+    public Guid ToGuid() => Id;
 }
 
 public readonly record struct TherapyPlanDescription(string Description);
@@ -67,8 +67,3 @@ public record TherapyPlanCreated(TherapyPlanId Id, GoalList GoalList, TherapyPla
 public record TherapyPlanActivated(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
 public record TherapyPlanCompleted(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
 public record TherapyPlanDiscard(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
-
-public record CreateTherapyPlanCommand(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : AggregateCommand<TherapyPlanId>(Id);
-public record ActivateTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);
-public record CompleteTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);
-public record DiscardTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);

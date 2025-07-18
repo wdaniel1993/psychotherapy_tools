@@ -1,5 +1,5 @@
-using TherapyTools.Domain.Common.Cqrs;
-using TherapyTools.Domain.TherapyManagement.Shared;
+using TherapyTools.Domain.Common.Interfaces;
+using TherapyTools.Domain.TherapyManagement.ValueObjects;
 
 namespace TherapyTools.Domain.TherapyManagement;
 
@@ -79,9 +79,3 @@ public record TherapySessionRescheduled(TherapySessionId Id, TimeSlot NewSlot) :
 public record TherapySessionCompleted(TherapySessionId Id, SessionNotes Notes) : AggregateDomainEvent<TherapySessionId>(Id);
 public record TherapySessionNotesUpdates(TherapySessionId Id, SessionNotes Notes) : AggregateDomainEvent<TherapySessionId>(Id);
 public record TherapySessionCanceled(TherapySessionId Id) : AggregateDomainEvent<TherapySessionId>(Id);
-
-public record ScheduleTherapySessionCommand(TherapySessionId Id, TimeSlot SessionTimeSlot, TherapySessionType Type, SessionNotes Notes) : AggregateCommand<TherapySessionId>(Id);
-public record RescheduleTherapySessionCommand(TherapySessionId Id, TimeSlot NewSlot) : AggregateCommand<TherapySessionId>(Id);
-public record CancelTherapySessionCommand(TherapySessionId Id) : AggregateCommand<TherapySessionId>(Id);
-public record CompleteTherapySessionCommand(TherapySessionId Id, SessionNotes Notes) : AggregateCommand<TherapySessionId>(Id);
-public record UpdateTherapySessionNotesCommand(TherapySessionId Id, SessionNotes Notes) : AggregateCommand<TherapySessionId>(Id);

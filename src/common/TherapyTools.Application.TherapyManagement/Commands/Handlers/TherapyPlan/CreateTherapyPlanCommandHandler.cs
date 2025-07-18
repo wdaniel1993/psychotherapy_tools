@@ -1,6 +1,8 @@
-using TherapyTools.Domain.Common.Cqrs;
+using TherapyTools.Application.Common.Interfaces;
+using TherapyTools.Domain.Common.Interfaces;
+using TherapyTools.Domain.TherapyManagement;
 
-namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapyPlan;
+namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapyPlan;
 
 public class CreateTherapyPlanCommandHandler : IAggregateCommandHandler<CreateTherapyPlanCommand, TherapyPlanId, TherapyPlanState>
 {

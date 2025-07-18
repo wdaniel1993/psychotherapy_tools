@@ -1,7 +1,9 @@
-namespace TherapyTools.Domain.Common.Cqrs;
+using TherapyTools.Domain.Common.Interfaces;
 
-public interface IDomainCommand {}
-public interface IAggregateCommand<TAggregateId> : IDomainCommand
+namespace TherapyTools.Application.Common.Interfaces;
+
+public interface ICommand {}
+public interface IAggregateCommand<TAggregateId> : ICommand
     where TAggregateId : IAggregateId
 { 
     TAggregateId AggregateId { get; }
@@ -12,7 +14,7 @@ public abstract record AggregateCommand<TAggregateId>(TAggregateId Id) : IAggreg
     public TAggregateId AggregateId => Id;
 }
 
-public abstract record MultiAggregateCommand(IEnumerable<IAggregateId> Ids) : IDomainCommand
+public abstract record MultiAggregateCommand(IEnumerable<IAggregateId> Ids) : ICommand
 {
     public IEnumerable<IAggregateId> AggregateIds => Ids;
 }

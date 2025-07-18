@@ -1,5 +1,7 @@
-namespace TherapyTools.Domain.Common.Cqrs;
-public interface ICommandHandler<TCommand, TState> where TCommand : IDomainCommand
+using TherapyTools.Domain.Common.Interfaces;
+
+namespace TherapyTools.Application.Common.Interfaces;
+public interface ICommandHandler<TCommand, TState> where TCommand : ICommand
 {
     Task<IEnumerable<IDomainEvent>> Handle(TCommand command, TState state);
 }

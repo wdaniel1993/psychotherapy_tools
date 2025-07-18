@@ -1,4 +1,4 @@
-namespace TherapyTools.Domain.Common.Cqrs;
+namespace TherapyTools.Domain.Common.Interfaces;
 
 public interface IAggregateId
 {

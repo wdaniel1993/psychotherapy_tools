@@ -1,4 +1,8 @@
 <Solution>
+    <Folder Name="/Application/">
+        <Project Path="../common/TherapyTools.Application.Common/TherapyTools.Application.Common.csproj" Id="4931b9a7-b7a1-47d0-93dd-3742d1600524" />
+        <Project Path="../common/TherapyTools.Application.TherapyManagement/TherapyTools.Application.TherapyManagement.csproj" Id="ec216223-4236-4a12-9c49-0ab807ed7b8d" />
+    </Folder>
     <Folder Name="/Domain/">
         <Project Path="../common/TherapyTools.Domain.Common/TherapyTools.Domain.Common.csproj" />
         <Project Path="../common/TherapyTools.Domain.TherapyManagement/TherapyTools.Domain.TherapyManagement.csproj" />

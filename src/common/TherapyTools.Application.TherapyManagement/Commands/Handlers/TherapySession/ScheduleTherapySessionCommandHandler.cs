@@ -1,6 +1,8 @@
-using TherapyTools.Domain.Common.Cqrs;
+using TherapyTools.Application.Common.Interfaces;
+using TherapyTools.Domain.Common.Interfaces;
+using TherapyTools.Domain.TherapyManagement;
 
-namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapySession;
+namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapySession;
 
 public class ScheduleTherapySessionCommandHandler : IAggregateCommandHandler<ScheduleTherapySessionCommand, TherapySessionId, TherapySessionState>
 {
