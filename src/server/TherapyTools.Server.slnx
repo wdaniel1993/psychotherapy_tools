@@ -6,5 +6,4 @@
     <Folder Name="/Server/">
         <Project Path="TherapyTools.Server.Grpc/TherapyTools.Server.Grpc.csproj" />
     </Folder>
-    <Folder Name="/Solution Items/" />
 </Solution>
