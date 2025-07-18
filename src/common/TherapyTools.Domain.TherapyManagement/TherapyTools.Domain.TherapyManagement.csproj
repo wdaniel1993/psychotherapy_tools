@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TherapyTools.Domain.Common.Cqrs\TherapyTools.Domain.Common.Cqrs.csproj" />
+    <ProjectReference Include="..\TherapyTools.Domain.Common.Cqrs\TherapyTools.Domain.Common.csproj" />
   </ItemGroup>
 
 </Project>

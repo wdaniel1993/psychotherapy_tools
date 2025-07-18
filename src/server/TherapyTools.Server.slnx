@@ -1,6 +1,6 @@
 <Solution>
     <Folder Name="/Domain/">
-        <Project Path="../common/TherapyTools.Domain.Common.Cqrs/TherapyTools.Domain.Common.Cqrs.csproj" />
+        <Project Path="../common/TherapyTools.Domain.Common.Cqrs/TherapyTools.Domain.Common.csproj" />
         <Project Path="../common/TherapyTools.Domain.TherapyManagement/TherapyTools.Domain.TherapyManagement.csproj" />
     </Folder>
     <Folder Name="/Server/">
