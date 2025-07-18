@@ -2,19 +2,11 @@ using TherapyTools.Domain.Common.Cqrs;
 
 namespace TherapyTools.Domain.TherapyManagement.CommandHandlers.TherapySession;
 
-public class UpdateTherapySessionNotesCommandHandler : ICommandHandler<UpdateTherapySessionNotesCommand>
+public class UpdateTherapySessionNotesCommandHandler : IAggregateCommandHandler<UpdateTherapySessionNotesCommand, TherapySessionId, TherapySessionState>
 {
-    private readonly IEventStore<TherapySessionId> _eventStore;
-
-    public UpdateTherapySessionNotesCommandHandler(IEventStore<TherapySessionId> eventStore)
+    public async IAsyncEnumerable<IDomainEvent> Handle(UpdateTherapySessionNotesCommand command, TherapySessionState state)
     {
-        _eventStore = eventStore;
-    }
-
-    public async IAsyncEnumerable<IDomainEvent> Handle(UpdateTherapySessionNotesCommand command)
-    {
-        var currentState = await TherapySessionAggregate.GetCurrentState(_eventStore, command.Id);
-        if(currentState.Status != TherapySessionStatus.Unconfirmed)
+        if(state.Status != TherapySessionStatus.Unconfirmed)
             throw new InvalidOperationException("Cannot update notes for a session that is not unconfirmed.");
         yield return new TherapySessionNotesUpdates(command.Id, command.Notes);
     }
