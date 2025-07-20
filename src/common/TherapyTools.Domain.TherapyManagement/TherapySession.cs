@@ -1,3 +1,4 @@
+using System.Linq;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement.ValueObjects;
 
@@ -57,6 +58,9 @@ public static class TherapySessionAggregate
             TherapySessionNotesUpdates e => state with { Notes = e.Notes },
             _ => state
         };
+
+    public static TherapySessionState Apply(TherapySessionState state, IEnumerable<IDomainEvent> events)
+        => events.Aggregate(state, Apply);
 
     public static TherapySessionState InitialState() => 
         new(

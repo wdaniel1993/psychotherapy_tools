@@ -48,6 +48,10 @@ public static class TherapyPlanAggregate
             _ => state
         };
 
+    public static TherapyPlanState Apply(TherapyPlanState state, IEnumerable<IDomainEvent> events)
+        => events.Aggregate(state, Apply);
+
+
     public static TherapyPlanState InitialState() =>
         new(
             TherapyPlanId.New(),
