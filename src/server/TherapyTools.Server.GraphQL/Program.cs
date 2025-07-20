@@ -1,14 +1,6 @@
-using HotChocolate;
-using HotChocolate.AspNetCore;
-using HotChocolate.Execution.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using TherapyTools.Application.TherapyManagement.Commands;
 using TherapyTools.Domain.TherapyManagement;
-using HotChocolate.Subscriptions;
-using FluentValidation;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
-using HotChocolate.Execution;
 
 var builder = WebApplication.CreateBuilder(args);
 

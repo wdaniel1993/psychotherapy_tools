@@ -1,6 +1,4 @@
 using FluentValidation;
-using TherapyTools.Application.TherapyManagement.Commands;
-using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Validators;
 

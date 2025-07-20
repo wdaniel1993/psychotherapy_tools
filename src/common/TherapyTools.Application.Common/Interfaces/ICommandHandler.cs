@@ -1,7 +1,3 @@
-using TherapyTools.Domain.Common.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace TherapyTools.Application.Common.Interfaces;
 
 // Updated to return CommandDispatchResult for transactional side effects

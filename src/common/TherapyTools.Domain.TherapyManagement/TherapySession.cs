@@ -1,4 +1,3 @@
-using System.Linq;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement.ValueObjects;
 

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TherapyTools.Application.Common;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
