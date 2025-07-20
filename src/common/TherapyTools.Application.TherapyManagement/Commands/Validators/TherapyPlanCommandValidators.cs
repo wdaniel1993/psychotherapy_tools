@@ -13,10 +13,10 @@ public class CreateTherapyPlanCommandValidator : AbstractValidator<CreateTherapy
         RuleForEach(x => x.GoalList.Goals)
             .ChildRules(goal =>
             {
-                goal.RuleFor(g => g.Name).NotEmpty();
+                goal.RuleFor(g => g.Title).NotEmpty();
                 goal.RuleFor(g => g.Description).NotEmpty();
             });
-        RuleFor(x => x.Description.Description).NotEmpty();
+        RuleFor(x => x.Description.Content).NotEmpty();
     }
 }
 

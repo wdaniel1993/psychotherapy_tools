@@ -11,15 +11,15 @@ public enum TherapyPlanStatus
     Discarded
 }
 
-public readonly record struct TherapyPlanId(Guid Id) : IAggregateId
+public readonly record struct TherapyPlanId(Guid Value) : IAggregateId
 {
     public static TherapyPlanId New() => new(Guid.NewGuid());
     public static TherapyPlanId From(Guid id) => new(id);
-    public Guid ToGuid() => Id;
+    public Guid ToGuid() => Value;
 }
 
-public readonly record struct TherapyPlanDescription(string Description);
-public readonly record struct Goal (string Name, string Description);
+public readonly record struct TherapyPlanDescription(string Content);
+public readonly record struct Goal (string Title, string Description);
 public readonly record struct GoalList(IReadOnlyList<Goal> Goals) {
     public static GoalList Empty => new([]);
 };

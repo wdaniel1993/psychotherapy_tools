@@ -15,7 +15,7 @@ public class ScheduleTherapySessionCommandValidator : AbstractValidator<Schedule
             .Must(slot => slot.Start < slot.End)
             .WithMessage("Session start must be before end.");
         RuleFor(x => x.Type).IsInEnum();
-        RuleFor(x => x.Notes.Notes).NotEmpty();
+        RuleFor(x => x.Notes.Content).NotEmpty();
     }
 }
 
@@ -44,7 +44,7 @@ public class CompleteTherapySessionCommandValidator : AbstractValidator<Complete
     public CompleteTherapySessionCommandValidator()
     {
         RuleFor(x => x.Id).NotNull();
-        RuleFor(x => x.Notes.Notes).NotEmpty();
+        RuleFor(x => x.Notes.Content).NotEmpty();
     }
 }
 
@@ -53,6 +53,6 @@ public class UpdateTherapySessionNotesCommandValidator : AbstractValidator<Updat
     public UpdateTherapySessionNotesCommandValidator()
     {
         RuleFor(x => x.Id).NotNull();
-        RuleFor(x => x.Notes.Notes).NotEmpty();
+        RuleFor(x => x.Notes.Content).NotEmpty();
     }
 }

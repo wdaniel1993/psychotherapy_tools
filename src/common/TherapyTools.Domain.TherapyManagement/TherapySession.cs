@@ -25,7 +25,7 @@ public readonly record struct TherapySessionId(Guid Id) : IAggregateId
     public Guid ToGuid() => Id;
 }
 
-public readonly record struct SessionNotes (string Notes);
+public readonly record struct SessionNotes (string Content);
 
 public record TherapySessionState(
     TherapySessionId Id,
