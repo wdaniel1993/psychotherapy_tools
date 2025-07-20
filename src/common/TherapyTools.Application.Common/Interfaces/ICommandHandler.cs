@@ -11,6 +11,3 @@ public interface IAggregateCommandHandler<TCommand, TAggregateId, TAggregateStat
     where TAggregateId : IAggregateId
     where TAggregateState : AggregateState<TAggregateId>
 { }
-
-public interface IMulipleAggregateCommandHandler : ICommandHandler<MultiAggregateCommand, IEnumerable<AggregateState<IAggregateId>>>
-{ }

@@ -50,15 +50,14 @@ public class Mutation
         where TAggregateState : AggregateState<TAggregateId>
     {
         await validator.ValidateAndThrowAsync(input);
-        var id = (TAggregateId)typeof(TCommand).GetProperty("Id")!.GetValue(input)!;
-        var state = await getState(eventStore, id);
+        var state = await getState(eventStore, input.AggregateId);
         var events = await handler.Handle(input, state);
         foreach (var @event in events)
         {
             await eventStore.Append(@event);
             state = aggregateApply(state, @event);
             var integrationEvent = integrationEventFactory(@event, state);
-            await eventSender.SendAsync($"{topicPrefix}_{id}", integrationEvent);
+            await eventSender.SendAsync($"{topicPrefix}_{input.AggregateId.ToGuid()}", integrationEvent);
         }
         return state;
     }
