@@ -1,4 +1,5 @@
-﻿using TherapyTools.Application.Common.Interfaces;
+﻿using TherapyTools.Application.Common;
+using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 using TherapyTools.Domain.TherapyManagement.ValueObjects;
 

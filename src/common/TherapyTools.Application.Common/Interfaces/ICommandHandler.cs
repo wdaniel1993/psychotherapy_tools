@@ -1,13 +1,11 @@
 using TherapyTools.Domain.Common.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TherapyTools.Application.Common.Interfaces;
+
+// Updated to return CommandDispatchResult for transactional side effects
 public interface ICommandHandler<TCommand> where TCommand : ICommand
 {
-    Task<IEnumerable<IDomainEvent>> Handle(TCommand command);
+    Task<CommandDispatchResult> Handle(TCommand command);
 }
-
-public interface IAggregateCommandHandler<TCommand, TAggregateId, TAggregateState> : ICommandHandler<TCommand>
-    where TCommand : IAggregateCommand<TAggregateId>
-    where TAggregateId : IAggregateId
-    where TAggregateState : AggregateState<TAggregateId>
-{ }

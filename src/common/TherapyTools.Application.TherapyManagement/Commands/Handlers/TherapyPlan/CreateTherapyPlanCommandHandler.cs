@@ -1,15 +1,21 @@
+using TherapyTools.Application.TherapyManagement;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapyPlan;
 
-public class CreateTherapyPlanCommandHandler : IAggregateCommandHandler<CreateTherapyPlanCommand, TherapyPlanId, TherapyPlanState>
+public class CreateTherapyPlanCommandHandler : TherapyPlanAggregateCommandHandler<CreateTherapyPlanCommand>
 {
-    public Task<IEnumerable<IDomainEvent>> Handle(CreateTherapyPlanCommand command, TherapyPlanState state)
+    public CreateTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : base(eventStore) { }
+
+    protected override Task<CommandDispatchResult> Handle(CreateTherapyPlanCommand command, TherapyPlanState state)
     {
         if(state.Status != TherapyPlanStatus.Draft)
             throw new InvalidOperationException("Therapy plan must be in draft status to be created.");
-        return Task.FromResult<IEnumerable<IDomainEvent>>([new TherapyPlanCreated(command.Id, command.GoalList, command.Description)]);
+        var domainEvents = new List<IDomainEvent> { new TherapyPlanCreated(command.Id, command.GoalList, command.Description) };
+        return Task.FromResult(new CommandDispatchResult(domainEvents, new List<IIntegrationEvent>()));
     }
 }
