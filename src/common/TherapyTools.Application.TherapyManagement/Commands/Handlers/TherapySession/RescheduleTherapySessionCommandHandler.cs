@@ -8,13 +8,13 @@ public class RescheduleTherapySessionCommandHandler : AbstractTherapySessionComm
 {
     public RescheduleTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore) : base(eventStore) { }
 
-    protected override Task<CommandDispatchResult> Handle(RescheduleTherapySessionCommand command, TherapySessionState state)
+    protected override Task<CommandResult> Handle(RescheduleTherapySessionCommand command, TherapySessionState state)
     {
         if (command.NewSlot.Start < DateTime.UtcNow)
             throw new InvalidOperationException("Cannot reschedule a session to a time in the past.");
         if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot reschedule a session that is not scheduled.");
         var domainEvents = new List<IDomainEvent> { new TherapySessionRescheduled(command.Id, command.NewSlot) };
-        return Task.FromResult(new CommandDispatchResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
     }
 }

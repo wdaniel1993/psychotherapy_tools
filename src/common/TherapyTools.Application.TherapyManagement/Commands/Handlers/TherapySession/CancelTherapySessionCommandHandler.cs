@@ -8,7 +8,7 @@ public class CancelTherapySessionCommandHandler : AbstractTherapySessionCommandH
 {
     public CancelTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore) : base(eventStore) { }
 
-    protected override Task<CommandDispatchResult> Handle(CancelTherapySessionCommand command, TherapySessionState state)
+    protected override Task<CommandResult> Handle(CancelTherapySessionCommand command, TherapySessionState state)
     {
         if (state.Status == TherapySessionStatus.Canceled)
             throw new InvalidOperationException("Cannot cancel a session that is already canceled.");
@@ -17,6 +17,6 @@ public class CancelTherapySessionCommandHandler : AbstractTherapySessionCommandH
         if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot cancel a session that is not scheduled.");
         var domainEvents = new List<IDomainEvent> { new TherapySessionCanceled(command.Id) };
-        return Task.FromResult(new CommandDispatchResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
     }
 }

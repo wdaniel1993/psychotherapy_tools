@@ -8,11 +8,11 @@ public class CompleteTherapyPlanCommandHandler : AbstractTherapyPlanCommandHandl
 {
     public CompleteTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : base(eventStore) { }
 
-    protected override Task<CommandDispatchResult> Handle(CompleteTherapyPlanCommand command, TherapyPlanState state)
+    protected override Task<CommandResult> Handle(CompleteTherapyPlanCommand command, TherapyPlanState state)
     {
         if(state.Status != TherapyPlanStatus.Active)
             throw new InvalidOperationException("Therapy plan must be in active status to be completed.");
         var domainEvents = new List<IDomainEvent> { new TherapyPlanCompleted(command.Id) };
-        return Task.FromResult(new CommandDispatchResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
     }
 }

@@ -7,7 +7,9 @@
         <Project Path="../common/TherapyTools.Domain.Common/TherapyTools.Domain.Common.csproj" />
         <Project Path="../common/TherapyTools.Domain.TherapyManagement/TherapyTools.Domain.TherapyManagement.csproj" />
     </Folder>
-    <Folder Name="/Infrastructure/" />
+    <Folder Name="/Infrastructure/">
+        <Project Path="TherapyTools.Infrastructure.InMemory/TherapyTools.Infrastructure.InMemory.csproj" Id="c0834803-3d6d-4769-9ff4-f1dc8617f6f6" />
+    </Folder>
     <Folder Name="/Presentation/">
         <Project Path="TherapyTools.Server.GraphQL/TherapyTools.Server.GraphQL.csproj" />
     </Folder>

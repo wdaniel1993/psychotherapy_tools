@@ -8,11 +8,11 @@ public class ActivateTherapyPlanCommandHandler : AbstractTherapyPlanCommandHandl
 {
     public ActivateTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : base(eventStore) { }
 
-    protected override Task<CommandDispatchResult> Handle(ActivateTherapyPlanCommand command, TherapyPlanState state)
+    protected override Task<CommandResult> Handle(ActivateTherapyPlanCommand command, TherapyPlanState state)
     {
         if(state.Status != TherapyPlanStatus.Draft)
             throw new InvalidOperationException("Therapy plan must be in draft status to be activated.");
         var domainEvents = new List<IDomainEvent> { new TherapyPlanActivated(command.Id) };
-        return Task.FromResult(new CommandDispatchResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
     }
 }

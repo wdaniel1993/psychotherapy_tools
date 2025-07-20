@@ -8,11 +8,11 @@ public class DiscardTherapyPlanCommandHandler : AbstractTherapyPlanCommandHandle
 {
     public DiscardTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : base(eventStore) { }
 
-    protected override Task<CommandDispatchResult> Handle(DiscardTherapyPlanCommand command, TherapyPlanState state)
+    protected override Task<CommandResult> Handle(DiscardTherapyPlanCommand command, TherapyPlanState state)
     {
         if (state.Status == TherapyPlanStatus.Completed)
             throw new InvalidOperationException("Therapy plan cannot be discarded after completion.");
         var domainEvents = new List<IDomainEvent> { new TherapyPlanDiscard(command.Id) };
-        return Task.FromResult(new CommandDispatchResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
     }
 }

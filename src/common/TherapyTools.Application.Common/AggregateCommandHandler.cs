@@ -15,7 +15,7 @@ public abstract class AggregateCommandHandler<TCommand, TAggregateId, TAggregate
         _eventStore = eventStore;
     }
 
-    public async Task<CommandDispatchResult> Handle(TCommand command)
+    public async Task<CommandResult> Handle(TCommand command)
     {
         var events = await _eventStore.GetEvents(command.AggregateId);
         var state = CreateStateFromEvents(events);
@@ -23,5 +23,5 @@ public abstract class AggregateCommandHandler<TCommand, TAggregateId, TAggregate
     }
 
     protected abstract TAggregateState CreateStateFromEvents(IEnumerable<IDomainEvent> events);
-    protected abstract Task<CommandDispatchResult> Handle(TCommand command, TAggregateState state);
+    protected abstract Task<CommandResult> Handle(TCommand command, TAggregateState state);
 }
