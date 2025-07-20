@@ -1,4 +1,3 @@
-using TherapyTools.Application.TherapyManagement;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapySession;
 
-public class UpdateTherapySessionNotesCommandHandler : TherapySessionAggregateCommandHandler<UpdateTherapySessionNotesCommand>
+public class UpdateTherapySessionNotesCommandHandler : AbstractTherapySessionCommandHandler<UpdateTherapySessionNotesCommand>
 {
     public UpdateTherapySessionNotesCommandHandler(IEventStore<TherapySessionId> eventStore) : base(eventStore) { }
 

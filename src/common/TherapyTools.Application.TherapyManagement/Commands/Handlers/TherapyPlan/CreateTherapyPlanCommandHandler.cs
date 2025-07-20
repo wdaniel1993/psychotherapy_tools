@@ -1,4 +1,3 @@
-using TherapyTools.Application.TherapyManagement;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapyPlan;
 
-public class CreateTherapyPlanCommandHandler : TherapyPlanAggregateCommandHandler<CreateTherapyPlanCommand>
+public class CreateTherapyPlanCommandHandler : AbstractTherapyPlanCommandHandler<CreateTherapyPlanCommand>
 {
     public CreateTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : base(eventStore) { }
 
