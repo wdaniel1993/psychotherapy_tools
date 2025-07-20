@@ -29,8 +29,19 @@ app.MapGraphQL();
 app.Run();
 
 // Integration event types for GraphQL subscriptions
-public record TherapyPlanIntegrationEvent(string EventName, TherapyPlanState State);
-public record TherapySessionIntegrationEvent(string EventName, TherapySessionState State);
+public record TherapyPlanIntegrationEvent(
+    string EventName,
+    IntegrationEventType EventType,
+    IAggregateDomainEvent<TherapyPlanId>? Event,
+    AggregateState<TherapyPlanId>? State
+) : AggregateIntegrationEvent<TherapyPlanId>(EventName, EventType, Event, State);
+
+public record TherapySessionIntegrationEvent(
+    string EventName,
+    IntegrationEventType EventType,
+    IAggregateDomainEvent<TherapySessionId>? Event,
+    AggregateState<TherapySessionId>? State
+) : AggregateIntegrationEvent<TherapySessionId>(EventName, EventType, Event, State);
 
 // Placeholder mutation and subscription types
 public class Mutation
@@ -41,24 +52,26 @@ public class Mutation
         IValidator<TCommand> validator,
         IEventStore<TAggregateId> eventStore,
         ITopicEventSender eventSender,
-        Func<IDomainEvent, TAggregateState, TIntegrationEvent> integrationEventFactory,
+        Func<IAggregateDomainEvent<TAggregateId>, TAggregateState, TIntegrationEvent> integrationEventFactory,
         Func<IEventStore<TAggregateId>, TAggregateId, Task<TAggregateState>> getState,
-        Func<TAggregateState, IDomainEvent, TAggregateState> aggregateApply,
+        Func<TAggregateState, IAggregateDomainEvent<TAggregateId>, TAggregateState> aggregateApply,
         string topicPrefix)
         where TCommand : IAggregateCommand<TAggregateId>
         where TAggregateId : IAggregateId
         where TAggregateState : AggregateState<TAggregateId>
+        where TIntegrationEvent : IAggregateIntegrationEvent<TAggregateId>
     {
         await validator.ValidateAndThrowAsync(input);
         var state = await getState(eventStore, input.AggregateId);
         var events = await handler.Handle(input, state);
-        foreach (var @event in events)
+        // needs to be implemented in the handler
+        /* foreach (var @event in events)
         {
             await eventStore.Append(@event);
             state = aggregateApply(state, @event);
             var integrationEvent = integrationEventFactory(@event, state);
             await eventSender.SendAsync($"{topicPrefix}_{input.AggregateId.ToGuid()}", integrationEvent);
-        }
+        }*/
         return state;
     }
 
@@ -68,7 +81,8 @@ public class Mutation
         IAggregateCommandHandler<TCommand, TherapyPlanId, TherapyPlanState> handler,
         IValidator<TCommand> validator,
         IEventStore<TherapyPlanId> eventStore,
-        ITopicEventSender eventSender)
+        ITopicEventSender eventSender,
+        IntegrationEventType eventType)
         where TCommand : IAggregateCommand<TherapyPlanId>
         => HandleAggregateCommand(
             input,
@@ -76,7 +90,12 @@ public class Mutation
             validator,
             eventStore,
             eventSender,
-            (e, s) => new TherapyPlanIntegrationEvent(e.GetType().ToString(), s),
+            (e, s) => new TherapyPlanIntegrationEvent(
+                e.GetType().Name,
+                eventType,
+                e as IAggregateDomainEvent<TherapyPlanId>,
+                s
+            ),
             TherapyPlanAggregate.GetCurrentState,
             TherapyPlanAggregate.Apply,
             "TherapyPlan");
@@ -87,7 +106,8 @@ public class Mutation
         IAggregateCommandHandler<TCommand, TherapySessionId, TherapySessionState> handler,
         IValidator<TCommand> validator,
         IEventStore<TherapySessionId> eventStore,
-        ITopicEventSender eventSender)
+        ITopicEventSender eventSender,
+        IntegrationEventType eventType)
         where TCommand : IAggregateCommand<TherapySessionId>
         => HandleAggregateCommand(
             input,
@@ -95,7 +115,12 @@ public class Mutation
             validator,
             eventStore,
             eventSender,
-            (e, s) => new TherapySessionIntegrationEvent(e.GetType().ToString(), s),
+            (e, s) => new TherapySessionIntegrationEvent(
+                e.GetType().Name,
+                eventType,
+                e as IAggregateDomainEvent<TherapySessionId>,
+                s
+            ),
             TherapySessionAggregate.GetCurrentState,
             TherapySessionAggregate.Apply,
             "TherapySession");
@@ -107,7 +132,7 @@ public class Mutation
         [Service] IValidator<CreateTherapyPlanCommand> validator,
         [Service] IEventStore<TherapyPlanId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender);
+        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender, IntegrationEventType.Created);
 
     public Task<TherapyPlanState> ActivateTherapyPlan(
         ActivateTherapyPlanCommand input,
@@ -115,7 +140,7 @@ public class Mutation
         [Service] IValidator<ActivateTherapyPlanCommand> validator,
         [Service] IEventStore<TherapyPlanId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender);
+        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender, IntegrationEventType.Updated);
 
     public Task<TherapyPlanState> CompleteTherapyPlan(
         CompleteTherapyPlanCommand input,
@@ -123,7 +148,7 @@ public class Mutation
         [Service] IValidator<CompleteTherapyPlanCommand> validator,
         [Service] IEventStore<TherapyPlanId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender);
+        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender, IntegrationEventType.Updated);
 
     public Task<TherapyPlanState> DiscardTherapyPlan(
         DiscardTherapyPlanCommand input,
@@ -131,7 +156,7 @@ public class Mutation
         [Service] IValidator<DiscardTherapyPlanCommand> validator,
         [Service] IEventStore<TherapyPlanId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender);
+        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender, IntegrationEventType.Deleted);
 
     // TherapySession Mutations
     public Task<TherapySessionState> ScheduleTherapySession(
@@ -140,7 +165,7 @@ public class Mutation
         [Service] IValidator<ScheduleTherapySessionCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender, IntegrationEventType.Created);
 
     public Task<TherapySessionState> RescheduleTherapySession(
         RescheduleTherapySessionCommand input,
@@ -148,7 +173,7 @@ public class Mutation
         [Service] IValidator<RescheduleTherapySessionCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender, IntegrationEventType.Updated);
 
     public Task<TherapySessionState> CancelTherapySession(
         CancelTherapySessionCommand input,
@@ -156,7 +181,7 @@ public class Mutation
         [Service] IValidator<CancelTherapySessionCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender, IntegrationEventType.Deleted);
 
     public Task<TherapySessionState> CompleteTherapySession(
         CompleteTherapySessionCommand input,
@@ -164,7 +189,7 @@ public class Mutation
         [Service] IValidator<CompleteTherapySessionCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender, IntegrationEventType.Updated);
 
     public Task<TherapySessionState> UpdateTherapySessionNotes(
         UpdateTherapySessionNotesCommand input,
@@ -172,7 +197,7 @@ public class Mutation
         [Service] IValidator<UpdateTherapySessionNotesCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender, IntegrationEventType.Updated);
 }
 
 public class Subscription

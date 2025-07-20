@@ -18,8 +18,12 @@ public interface IIntegrationEvent
     IntegrationEventType EventType { get; }
 }
 
+public interface IAggregateIntegrationEvent<TAggregateId> : IIntegrationEvent
+    where TAggregateId : IAggregateId
+{
+}
 
-public record AggregateIntegrationEvent<TAggregateId>(string EventName, IntegrationEventType EventType, IAggregateDomainEvent<TAggregateId>? Event, AggregateState<TAggregateId>? State) : IIntegrationEvent
+public record AggregateIntegrationEvent<TAggregateId>(string EventName, IntegrationEventType EventType, IAggregateDomainEvent<TAggregateId>? Event, AggregateState<TAggregateId>? State) : IAggregateIntegrationEvent<TAggregateId>
     where TAggregateId : IAggregateId
 {
 

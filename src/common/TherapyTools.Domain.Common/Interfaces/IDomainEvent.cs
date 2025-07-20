@@ -8,7 +8,6 @@ public interface IAggregateDomainEvent<TAggregateId> : IDomainEvent
     TAggregateId AggregateId { get; }
 }
 
-public abstract record AggregateDomainEvent<TAggregateId>(TAggregateId Id) : IAggregateDomainEvent<TAggregateId>
+public abstract record AggregateDomainEvent<TAggregateId>(TAggregateId AggregateId) : IAggregateDomainEvent<TAggregateId>
     where TAggregateId : IAggregateId { 
-    public TAggregateId AggregateId => Id;
 }
