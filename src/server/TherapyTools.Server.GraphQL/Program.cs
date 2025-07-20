@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add GraphQL services
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType(d => d.Name("Query")) // Placeholder for queries
+    .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddSubscriptionType<Subscription>()
     .AddInMemorySubscriptions();
@@ -29,21 +29,21 @@ app.MapGraphQL();
 app.Run();
 
 // Integration event types for GraphQL subscriptions
-public record TherapyPlanIntegrationEvent(object DomainEvent, TherapyTools.Domain.TherapyManagement.TherapyPlanState State);
-public record TherapySessionIntegrationEvent(object DomainEvent, TherapyTools.Domain.TherapyManagement.TherapySessionState);
+public record TherapyPlanIntegrationEvent(string EventName, TherapyPlanState State);
+public record TherapySessionIntegrationEvent(string EventName, TherapySessionState State);
 
 // Placeholder mutation and subscription types
 public class Mutation
 {
-    // Generic mutation handler
-    private async Task<TIntegrationEvent> HandleCommand<TCommand, TAggregateId, TAggregateState, TIntegrationEvent>(
+    private async Task<TAggregateState> HandleAggregateCommand<TCommand, TAggregateId, TAggregateState, TIntegrationEvent>(
         TCommand input,
         IAggregateCommandHandler<TCommand, TAggregateId, TAggregateState> handler,
         IValidator<TCommand> validator,
         IEventStore<TAggregateId> eventStore,
         ITopicEventSender eventSender,
-        Func<object, TAggregateState, TIntegrationEvent> integrationEventFactory,
+        Func<IDomainEvent, TAggregateState, TIntegrationEvent> integrationEventFactory,
         Func<IEventStore<TAggregateId>, TAggregateId, Task<TAggregateState>> getState,
+        Func<TAggregateState, IDomainEvent, TAggregateState> aggregateApply,
         string topicPrefix)
         where TCommand : IAggregateCommand<TAggregateId>
         where TAggregateId : IAggregateId
@@ -53,120 +53,157 @@ public class Mutation
         var id = (TAggregateId)typeof(TCommand).GetProperty("Id")!.GetValue(input)!;
         var state = await getState(eventStore, id);
         var events = await handler.Handle(input, state);
-        await eventStore.Append(events);
-        var newState = await getState(eventStore, id);
-        var integrationEvent = integrationEventFactory(events.First(), newState);
-        await eventSender.SendAsync($"{topicPrefix}_{id}", integrationEvent);
-        return integrationEvent;
+        foreach (var @event in events)
+        {
+            await eventStore.Append(@event);
+            state = aggregateApply(state, @event);
+            var integrationEvent = integrationEventFactory(@event, state);
+            await eventSender.SendAsync($"{topicPrefix}_{id}", integrationEvent);
+        }
+        return state;
     }
 
+    // Helper for TherapyPlan mutations
+    private Task<TherapyPlanState> HandleTherapyPlanCommand<TCommand>(
+        TCommand input,
+        IAggregateCommandHandler<TCommand, TherapyPlanId, TherapyPlanState> handler,
+        IValidator<TCommand> validator,
+        IEventStore<TherapyPlanId> eventStore,
+        ITopicEventSender eventSender)
+        where TCommand : IAggregateCommand<TherapyPlanId>
+        => HandleAggregateCommand(
+            input,
+            handler,
+            validator,
+            eventStore,
+            eventSender,
+            (e, s) => new TherapyPlanIntegrationEvent(e.GetType().ToString(), s),
+            TherapyPlanAggregate.GetCurrentState,
+            TherapyPlanAggregate.Apply,
+            "TherapyPlan");
+
+    // Helper for TherapySession mutations
+    private Task<TherapySessionState> HandleTherapySessionCommand<TCommand>(
+        TCommand input,
+        IAggregateCommandHandler<TCommand, TherapySessionId, TherapySessionState> handler,
+        IValidator<TCommand> validator,
+        IEventStore<TherapySessionId> eventStore,
+        ITopicEventSender eventSender)
+        where TCommand : IAggregateCommand<TherapySessionId>
+        => HandleAggregateCommand(
+            input,
+            handler,
+            validator,
+            eventStore,
+            eventSender,
+            (e, s) => new TherapySessionIntegrationEvent(e.GetType().ToString(), s),
+            TherapySessionAggregate.GetCurrentState,
+            TherapySessionAggregate.Apply,
+            "TherapySession");
+
     // TherapyPlan Mutations
-    public Task<TherapyPlanIntegrationEvent> CreateTherapyPlan(
+    public Task<TherapyPlanState> CreateTherapyPlan(
         CreateTherapyPlanCommand input,
         [Service] IAggregateCommandHandler<CreateTherapyPlanCommand, TherapyPlanId, TherapyPlanState> handler,
         [Service] IValidator<CreateTherapyPlanCommand> validator,
         [Service] IEventStore<TherapyPlanId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleCommand(input, handler, validator, eventStore, eventSender,
-            (e, s) => new TherapyPlanIntegrationEvent(e, s),
-            TherapyPlanAggregate.GetCurrentState, "TherapyPlan");
+        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender);
 
-    public Task<TherapyPlanIntegrationEvent> ActivateTherapyPlan(
+    public Task<TherapyPlanState> ActivateTherapyPlan(
         ActivateTherapyPlanCommand input,
         [Service] IAggregateCommandHandler<ActivateTherapyPlanCommand, TherapyPlanId, TherapyPlanState> handler,
         [Service] IValidator<ActivateTherapyPlanCommand> validator,
         [Service] IEventStore<TherapyPlanId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleCommand(input, handler, validator, eventStore, eventSender,
-            (e, s) => new TherapyPlanIntegrationEvent(e, s),
-            TherapyPlanAggregate.GetCurrentState, "TherapyPlan");
+        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender);
 
-    public Task<TherapyPlanIntegrationEvent> CompleteTherapyPlan(
+    public Task<TherapyPlanState> CompleteTherapyPlan(
         CompleteTherapyPlanCommand input,
         [Service] IAggregateCommandHandler<CompleteTherapyPlanCommand, TherapyPlanId, TherapyPlanState> handler,
         [Service] IValidator<CompleteTherapyPlanCommand> validator,
         [Service] IEventStore<TherapyPlanId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleCommand(input, handler, validator, eventStore, eventSender,
-            (e, s) => new TherapyPlanIntegrationEvent(e, s),
-            TherapyPlanAggregate.GetCurrentState, "TherapyPlan");
+        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender);
 
-    public Task<TherapyPlanIntegrationEvent> DiscardTherapyPlan(
+    public Task<TherapyPlanState> DiscardTherapyPlan(
         DiscardTherapyPlanCommand input,
         [Service] IAggregateCommandHandler<DiscardTherapyPlanCommand, TherapyPlanId, TherapyPlanState> handler,
         [Service] IValidator<DiscardTherapyPlanCommand> validator,
         [Service] IEventStore<TherapyPlanId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleCommand(input, handler, validator, eventStore, eventSender,
-            (e, s) => new TherapyPlanIntegrationEvent(e, s),
-            TherapyPlanAggregate.GetCurrentState, "TherapyPlan");
+        HandleTherapyPlanCommand(input, handler, validator, eventStore, eventSender);
 
     // TherapySession Mutations
-    public Task<TherapySessionIntegrationEvent> ScheduleTherapySession(
+    public Task<TherapySessionState> ScheduleTherapySession(
         ScheduleTherapySessionCommand input,
         [Service] IAggregateCommandHandler<ScheduleTherapySessionCommand, TherapySessionId, TherapySessionState> handler,
         [Service] IValidator<ScheduleTherapySessionCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleCommand(input, handler, validator, eventStore, eventSender,
-            (e, s) => new TherapySessionIntegrationEvent(e, s),
-            TherapySessionAggregate.GetCurrentState, "TherapySession");
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
 
-    public Task<TherapySessionIntegrationEvent> RescheduleTherapySession(
+    public Task<TherapySessionState> RescheduleTherapySession(
         RescheduleTherapySessionCommand input,
         [Service] IAggregateCommandHandler<RescheduleTherapySessionCommand, TherapySessionId, TherapySessionState> handler,
         [Service] IValidator<RescheduleTherapySessionCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleCommand(input, handler, validator, eventStore, eventSender,
-            (e, s) => new TherapySessionIntegrationEvent(e, s),
-            TherapySessionAggregate.GetCurrentState, "TherapySession");
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
 
-    public Task<TherapySessionIntegrationEvent> CancelTherapySession(
+    public Task<TherapySessionState> CancelTherapySession(
         CancelTherapySessionCommand input,
         [Service] IAggregateCommandHandler<CancelTherapySessionCommand, TherapySessionId, TherapySessionState> handler,
         [Service] IValidator<CancelTherapySessionCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleCommand(input, handler, validator, eventStore, eventSender,
-            (e, s) => new TherapySessionIntegrationEvent(e, s),
-            TherapySessionAggregate.GetCurrentState, "TherapySession");
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
 
-    public Task<TherapySessionIntegrationEvent> CompleteTherapySession(
+    public Task<TherapySessionState> CompleteTherapySession(
         CompleteTherapySessionCommand input,
         [Service] IAggregateCommandHandler<CompleteTherapySessionCommand, TherapySessionId, TherapySessionState> handler,
         [Service] IValidator<CompleteTherapySessionCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleCommand(input, handler, validator, eventStore, eventSender,
-            (e, s) => new TherapySessionIntegrationEvent(e, s),
-            TherapySessionAggregate.GetCurrentState, "TherapySession");
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
 
-    public Task<TherapySessionIntegrationEvent> UpdateTherapySessionNotes(
+    public Task<TherapySessionState> UpdateTherapySessionNotes(
         UpdateTherapySessionNotesCommand input,
         [Service] IAggregateCommandHandler<UpdateTherapySessionNotesCommand, TherapySessionId, TherapySessionState> handler,
         [Service] IValidator<UpdateTherapySessionNotesCommand> validator,
         [Service] IEventStore<TherapySessionId> eventStore,
         [Service] ITopicEventSender eventSender) =>
-        HandleCommand(input, handler, validator, eventStore, eventSender,
-            (e, s) => new TherapySessionIntegrationEvent(e, s),
-            TherapySessionAggregate.GetCurrentState, "TherapySession");
+        HandleTherapySessionCommand(input, handler, validator, eventStore, eventSender);
 }
 
 public class Subscription
 {
     [Subscribe]
-    public async ValueTask<ISourceStream<TherapyPlanIntegrationEvent>> OnTherapyPlanChanged(
-        TherapyPlanId id,
-        [Service] ITopicEventReceiver eventReceiver)
-    {
-        return await eventReceiver.SubscribeAsync<TherapyPlanIntegrationEvent>($"TherapyPlan_{id}");
-    }
+    [Topic($"TherapyPlan_{{{nameof(id)}}}")]
+    public TherapyPlanIntegrationEvent OnTherapyPlanChanged(TherapyPlanId id, [EventMessage] TherapyPlanIntegrationEvent @event)
+        => @event;
+
     [Subscribe]
-    public async ValueTask<ISourceStream<TherapySessionIntegrationEvent>> OnTherapySessionChanged(
-        TherapySessionId id,
-        [Service] ITopicEventReceiver eventReceiver)
+    [Topic($"TherapySession_{{{nameof(id)}}}")]
+    public TherapySessionIntegrationEvent OnTherapySessionChanged(TherapyPlanId id, [EventMessage] TherapySessionIntegrationEvent @event)
+        => @event;
+
+}
+
+// Query type for TherapyPlan and TherapySession
+public class Query
+{
+    public async Task<TherapyPlanState?> GetTherapyPlanById(
+        TherapyPlanId id,
+        [Service] IEventStore<TherapyPlanId> eventStore)
     {
-        return await eventReceiver.SubscribeAsync<TherapySessionIntegrationEvent>($"TherapySession_{id}");
+        return await TherapyPlanAggregate.GetCurrentState(eventStore, id);
+    }
+
+    public async Task<TherapySessionState?> GetTherapySessionById(
+        TherapySessionId id,
+        [Service] IEventStore<TherapySessionId> eventStore)
+    {
+        return await TherapySessionAggregate.GetCurrentState(eventStore, id);
     }
 }
