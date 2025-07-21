@@ -1,3 +1,4 @@
+using Mediator;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
@@ -15,6 +16,6 @@ public class RescheduleTherapySessionCommandHandler : AbstractTherapySessionComm
         if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot reschedule a session that is not scheduled.");
         var domainEvents = new List<IDomainEvent> { new TherapySessionRescheduled(command.Id, command.NewSlot) };
-        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
     }
 }

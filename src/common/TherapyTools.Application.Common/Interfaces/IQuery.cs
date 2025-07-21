@@ -1,3 +1,2 @@
-namespace TherapyTools.Application.Common.Interfaces;
-
-public interface IQuery<TResult> {}
+// Remove this file and use Mediator's IQuery<TResult> instead.
+// All usages should be updated to use Mediator.IQuery<TResult>.

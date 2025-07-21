@@ -1,3 +1,4 @@
+using Mediator;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
@@ -13,6 +14,6 @@ public class CompleteTherapyPlanCommandHandler : AbstractTherapyPlanCommandHandl
         if(state.Status != TherapyPlanStatus.Active)
             throw new InvalidOperationException("Therapy plan must be in active status to be completed.");
         var domainEvents = new List<IDomainEvent> { new TherapyPlanCompleted(command.Id) };
-        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
     }
 }

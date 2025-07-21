@@ -1,3 +1,4 @@
+using Mediator;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
@@ -15,6 +16,6 @@ public class CompleteTherapySessionCommandHandler : AbstractTherapySessionComman
         if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot complete a session that is not scheduled.");
         var domainEvents = new List<IDomainEvent> { new TherapySessionCompleted(command.Id, command.Notes) };
-        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
     }
 }

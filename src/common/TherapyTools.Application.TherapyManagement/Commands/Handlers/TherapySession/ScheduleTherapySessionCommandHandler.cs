@@ -1,3 +1,4 @@
+using Mediator;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
@@ -15,6 +16,6 @@ public class ScheduleTherapySessionCommandHandler : AbstractTherapySessionComman
         if (state.Status != TherapySessionStatus.Unconfirmed)
             throw new InvalidOperationException("Cannot schedule a session that is already scheduled or canceled.");
         var domainEvents = new List<IDomainEvent> { new TherapySessionScheduled(command.Id, command.SessionTimeSlot, command.Type, command.Notes) };
-        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
     }
 }

@@ -1,3 +1,4 @@
+using Mediator;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
@@ -13,6 +14,6 @@ public class DiscardTherapyPlanCommandHandler : AbstractTherapyPlanCommandHandle
         if (state.Status == TherapyPlanStatus.Completed)
             throw new InvalidOperationException("Therapy plan cannot be discarded after completion.");
         var domainEvents = new List<IDomainEvent> { new TherapyPlanDiscard(command.Id) };
-        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
     }
 }

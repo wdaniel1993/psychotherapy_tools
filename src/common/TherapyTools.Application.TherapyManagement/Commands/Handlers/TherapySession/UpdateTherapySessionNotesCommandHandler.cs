@@ -1,3 +1,4 @@
+using Mediator;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
@@ -13,6 +14,6 @@ public class UpdateTherapySessionNotesCommandHandler : AbstractTherapySessionCom
         if(state.Status != TherapySessionStatus.Unconfirmed)
             throw new InvalidOperationException("Cannot update notes for a session that is not unconfirmed.");
         var domainEvents = new List<IDomainEvent> { new TherapySessionNotesUpdates(command.Id, command.Notes) };
-        return Task.FromResult(new CommandResult(domainEvents, new List<IIntegrationEvent>()));
+        return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
     }
 }

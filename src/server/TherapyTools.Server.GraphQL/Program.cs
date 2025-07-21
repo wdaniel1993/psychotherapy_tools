@@ -1,6 +1,7 @@
 using TherapyTools.Domain.TherapyManagement;
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
+using Mediator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +51,7 @@ public class Subscription
 
     [Subscribe]
     [Topic($"TherapySession_{{{nameof(id)}}}")]
-    public TherapySessionIntegrationEvent OnTherapySessionChanged(TherapyPlanId id, [EventMessage] TherapySessionIntegrationEvent @event)
+    public TherapySessionIntegrationEvent OnTherapySessionChanged(TherapySessionId id, [EventMessage] TherapySessionIntegrationEvent @event)
         => @event;
 
 }

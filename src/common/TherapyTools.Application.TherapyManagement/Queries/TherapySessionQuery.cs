@@ -1,4 +1,4 @@
-﻿using TherapyTools.Application.Common.Interfaces;
+﻿using Mediator;
 using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Application.TherapyManagement.Queries;

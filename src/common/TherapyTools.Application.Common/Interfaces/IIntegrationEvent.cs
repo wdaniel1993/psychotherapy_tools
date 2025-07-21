@@ -1,7 +1,7 @@
-﻿using TherapyTools.Domain.Common.Interfaces;
+using Mediator;
+using TherapyTools.Domain.Common.Interfaces;
 
 namespace TherapyTools.Application.Common.Interfaces;
-
 
 public enum IntegrationEventType
 {
@@ -11,8 +11,7 @@ public enum IntegrationEventType
     Refresh
 }
 
-
-public interface IIntegrationEvent
+public interface IIntegrationEvent : INotification
 {
     string EventName { get; }
     IntegrationEventType EventType { get; }
@@ -23,8 +22,12 @@ public interface IAggregateIntegrationEvent<TAggregateId> : IIntegrationEvent
 {
 }
 
-public record AggregateIntegrationEvent<TAggregateId>(string EventName, IntegrationEventType EventType, IAggregateDomainEvent<TAggregateId>? Event, AggregateState<TAggregateId>? State) : IAggregateIntegrationEvent<TAggregateId>
+public abstract record AggregateIntegrationEvent<TAggregateId>(
+    string EventName,
+    IntegrationEventType EventType,
+    IAggregateDomainEvent<TAggregateId>? Event,
+    AggregateState<TAggregateId>? State
+) : IAggregateIntegrationEvent<TAggregateId>
     where TAggregateId : IAggregateId
 {
-
 }

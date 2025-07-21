@@ -1,5 +1,5 @@
+using Mediator;
 using TherapyTools.Domain.TherapyManagement;
-using TherapyTools.Application.Common.Interfaces;
 
 namespace TherapyTools.Application.TherapyManagement.Queries;
 
