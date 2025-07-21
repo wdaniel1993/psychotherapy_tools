@@ -5,10 +5,8 @@ using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapySession;
 
-public class ScheduleTherapySessionCommandHandler : AbstractTherapySessionCommandHandler<ScheduleTherapySessionCommand>
+public class ScheduleTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore) : AbstractTherapySessionCommandHandler<ScheduleTherapySessionCommand>(eventStore)
 {
-    public ScheduleTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore) : base(eventStore) { }
-
     protected override Task<CommandResult> Handle(ScheduleTherapySessionCommand command, TherapySessionState state)
     {
         if(command.SessionTimeSlot.Start < DateTime.UtcNow)

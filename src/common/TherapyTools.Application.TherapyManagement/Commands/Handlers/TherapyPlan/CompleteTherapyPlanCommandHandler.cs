@@ -5,10 +5,8 @@ using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapyPlan;
 
-public class CompleteTherapyPlanCommandHandler : AbstractTherapyPlanCommandHandler<CompleteTherapyPlanCommand>
+public class CompleteTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : AbstractTherapyPlanCommandHandler<CompleteTherapyPlanCommand>(eventStore)
 {
-    public CompleteTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : base(eventStore) { }
-
     protected override Task<CommandResult> Handle(CompleteTherapyPlanCommand command, TherapyPlanState state)
     {
         if(state.Status != TherapyPlanStatus.Active)

@@ -5,10 +5,8 @@ using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapySession;
 
-public class UpdateTherapySessionNotesCommandHandler : AbstractTherapySessionCommandHandler<UpdateTherapySessionNotesCommand>
+public class UpdateTherapySessionNotesCommandHandler(IEventStore<TherapySessionId> eventStore) : AbstractTherapySessionCommandHandler<UpdateTherapySessionNotesCommand>(eventStore)
 {
-    public UpdateTherapySessionNotesCommandHandler(IEventStore<TherapySessionId> eventStore) : base(eventStore) { }
-
     protected override Task<CommandResult> Handle(UpdateTherapySessionNotesCommand command, TherapySessionState state)
     {
         if(state.Status != TherapySessionStatus.Unconfirmed)

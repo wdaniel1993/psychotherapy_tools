@@ -5,10 +5,8 @@ using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapySession;
 
-public class CancelTherapySessionCommandHandler : AbstractTherapySessionCommandHandler<CancelTherapySessionCommand>
+public class CancelTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore) : AbstractTherapySessionCommandHandler<CancelTherapySessionCommand>(eventStore)
 {
-    public CancelTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore) : base(eventStore) { }
-
     protected override Task<CommandResult> Handle(CancelTherapySessionCommand command, TherapySessionState state)
     {
         if (state.Status == TherapySessionStatus.Canceled)

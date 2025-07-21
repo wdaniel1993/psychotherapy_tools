@@ -5,10 +5,8 @@ using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapySession;
 
-public class CompleteTherapySessionCommandHandler : AbstractTherapySessionCommandHandler<CompleteTherapySessionCommand>
+public class CompleteTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore) : AbstractTherapySessionCommandHandler<CompleteTherapySessionCommand>(eventStore)
 {
-    public CompleteTherapySessionCommandHandler(IEventStore<TherapySessionId> eventStore) : base(eventStore) { }
-
     protected override Task<CommandResult> Handle(CompleteTherapySessionCommand command, TherapySessionState state)
     {
         if (state.Status == TherapySessionStatus.Done)

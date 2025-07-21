@@ -5,10 +5,8 @@ using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapyPlan;
 
-public class ActivateTherapyPlanCommandHandler : AbstractTherapyPlanCommandHandler<ActivateTherapyPlanCommand>
+public class ActivateTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : AbstractTherapyPlanCommandHandler<ActivateTherapyPlanCommand>(eventStore)
 {
-    public ActivateTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : base(eventStore) { }
-
     protected override Task<CommandResult> Handle(ActivateTherapyPlanCommand command, TherapyPlanState state)
     {
         if(state.Status != TherapyPlanStatus.Draft)

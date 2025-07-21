@@ -5,10 +5,8 @@ using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapyPlan;
 
-public class DiscardTherapyPlanCommandHandler : AbstractTherapyPlanCommandHandler<DiscardTherapyPlanCommand>
+public class DiscardTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : AbstractTherapyPlanCommandHandler<DiscardTherapyPlanCommand>(eventStore)
 {
-    public DiscardTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventStore) : base(eventStore) { }
-
     protected override Task<CommandResult> Handle(DiscardTherapyPlanCommand command, TherapyPlanState state)
     {
         if (state.Status == TherapyPlanStatus.Completed)
