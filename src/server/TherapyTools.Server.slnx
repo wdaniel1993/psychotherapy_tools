@@ -12,6 +12,8 @@
         <Project Path="TherapyTools.Infrastructure.Postgres/TherapyTools.Infrastructure.Postgres.csproj" Id="f83890db-73a1-41a4-bced-5f6b12eb3eac" />
     </Folder>
     <Folder Name="/Presentation/">
+        <Project Path="TherapyTools.Server.Aspire/TherapyTools.Server.Aspire.AppHost/TherapyTools.Server.Aspire.AppHost.csproj" Id="a35c38c0-dc51-47da-aa8b-c1efc401a622" />
+        <Project Path="TherapyTools.Server.Aspire/TherapyTools.Server.Aspire.ServiceDefaults/TherapyTools.Server.Aspire.ServiceDefaults.csproj" />
         <Project Path="TherapyTools.Server.GraphQL/TherapyTools.Server.GraphQL.csproj" />
     </Folder>
 </Solution>
