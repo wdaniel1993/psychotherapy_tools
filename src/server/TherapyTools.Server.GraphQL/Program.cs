@@ -3,6 +3,7 @@ using TherapyTools.Domain.Common.Interfaces;
 using Mediator;
 using TherapyTools.Domain.Common;
 using TherapyTools.Application.Common;
+using TherapyTools.Application.TherapyManagement.IntegrationEvents;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,21 +22,6 @@ app.UseWebSockets();
 app.MapGraphQL();
 
 app.Run();
-
-// Integration event types for GraphQL subscriptions
-public record TherapyPlanIntegrationEvent(
-    string EventName,
-    IntegrationEventType EventType,
-    IAggregateDomainEvent<TherapyPlanId>? Event,
-    AggregateState<TherapyPlanId>? State
-) : AggregateIntegrationEvent<TherapyPlanId>(EventName, EventType, Event, State);
-
-public record TherapySessionIntegrationEvent(
-    string EventName,
-    IntegrationEventType EventType,
-    IAggregateDomainEvent<TherapySessionId>? Event,
-    AggregateState<TherapySessionId>? State
-) : AggregateIntegrationEvent<TherapySessionId>(EventName, EventType, Event, State);
 
 // Placeholder mutation and subscription types
 public class Mutation;
