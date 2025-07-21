@@ -1,6 +1,6 @@
 namespace TherapyTools.Domain.Common.Interfaces;
 
-public interface IDomainEvent { }
+public interface IDomainEvent;
 
 public interface IAggregateDomainEvent<TAggregateId> : IDomainEvent
     where TAggregateId : IAggregateId
@@ -9,5 +9,4 @@ public interface IAggregateDomainEvent<TAggregateId> : IDomainEvent
 }
 
 public abstract record AggregateDomainEvent<TAggregateId>(TAggregateId AggregateId) : IAggregateDomainEvent<TAggregateId>
-    where TAggregateId : IAggregateId { 
-}
+    where TAggregateId : IAggregateId;

@@ -1,3 +1,4 @@
+using TherapyTools.Domain.Common;
 using TherapyTools.Domain.Common.Interfaces;
 
 namespace TherapyTools.Domain.TherapyManagement;
@@ -25,11 +26,11 @@ public readonly record struct GoalList(IReadOnlyList<Goal> Goals) {
 };
 
 public record TherapyPlanState(
-    TherapyPlanId Id,
+    TherapyPlanId AggregateId,
     GoalList GoalList,
     TherapyPlanDescription Description,
     TherapyPlanStatus Status
-) : AggregateState<TherapyPlanId>(Id);
+) : AggregateState<TherapyPlanId>(AggregateId);
 
 public static class TherapyPlanAggregate
 {

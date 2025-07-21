@@ -1,3 +1,4 @@
+using TherapyTools.Domain.Common;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement.ValueObjects;
 
@@ -28,12 +29,12 @@ public readonly record struct TherapySessionId(Guid Id) : IAggregateId
 public readonly record struct SessionNotes (string Content);
 
 public record TherapySessionState(
-    TherapySessionId Id,
+    TherapySessionId AggregateId,
     TimeSlot SessionTimeSlot,
     TherapySessionType Type,
     SessionNotes Notes,
     TherapySessionStatus Status
-) :  AggregateState<TherapySessionId>(Id);
+) :  AggregateState<TherapySessionId>(AggregateId);
 
 public static class TherapySessionAggregate
 {

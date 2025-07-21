@@ -14,7 +14,7 @@ public class InProcessEventStore<TAggregateId> : IEventStore<TAggregateId>
         {
             var key = aggregateEvent.AggregateId.ToGuid();
             _store.AddOrUpdate(key,
-                _ => new List<IDomainEvent> { domainEvent },
+                _ => [domainEvent],
                 (_, list) => { list.Add(domainEvent); return list; });
         }
         return Task.CompletedTask;

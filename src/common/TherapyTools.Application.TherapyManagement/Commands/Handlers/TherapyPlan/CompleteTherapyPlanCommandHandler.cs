@@ -1,5 +1,5 @@
 using Mediator;
-using TherapyTools.Application.Common.Interfaces;
+using TherapyTools.Application.Common;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 

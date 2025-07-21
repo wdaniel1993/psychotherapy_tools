@@ -1,7 +1,8 @@
 using TherapyTools.Domain.TherapyManagement;
-using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.Common.Interfaces;
 using Mediator;
+using TherapyTools.Domain.Common;
+using TherapyTools.Application.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,10 +38,7 @@ public record TherapySessionIntegrationEvent(
 ) : AggregateIntegrationEvent<TherapySessionId>(EventName, EventType, Event, State);
 
 // Placeholder mutation and subscription types
-public class Mutation
-{
-    
-}
+public class Mutation;
 
 public class Subscription
 {
