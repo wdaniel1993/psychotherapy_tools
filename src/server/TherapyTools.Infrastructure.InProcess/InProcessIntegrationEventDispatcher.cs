@@ -13,6 +13,5 @@ public class InProcessIntegrationEventDispatcher : IIntegrationEventDispatcher
         return Task.CompletedTask;
     }
 
-    // For testing or inspection
     public IEnumerable<IIntegrationEvent> GetDispatchedEvents() => _events.ToArray();
 }

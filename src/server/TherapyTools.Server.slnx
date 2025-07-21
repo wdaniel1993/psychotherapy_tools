@@ -9,6 +9,7 @@
     </Folder>
     <Folder Name="/Infrastructure/">
         <Project Path="TherapyTools.Infrastructure.InProcess/TherapyTools.Infrastructure.InProcess.csproj" />
+        <Project Path="TherapyTools.Infrastructure.Postgres/TherapyTools.Infrastructure.Postgres.csproj" Id="f83890db-73a1-41a4-bced-5f6b12eb3eac" />
     </Folder>
     <Folder Name="/Presentation/">
         <Project Path="TherapyTools.Server.GraphQL/TherapyTools.Server.GraphQL.csproj" />

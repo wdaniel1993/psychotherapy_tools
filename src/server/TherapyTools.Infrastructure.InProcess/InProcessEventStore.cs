@@ -24,6 +24,6 @@ public class InProcessEventStore<TAggregateId> : IEventStore<TAggregateId>
     {
         var key = aggregateId.ToGuid();
         _store.TryGetValue(key, out var events);
-        return Task.FromResult(events?.AsEnumerable() ?? Enumerable.Empty<IDomainEvent>());
+        return Task.FromResult(events?.AsEnumerable() ?? []);
     }
 }
