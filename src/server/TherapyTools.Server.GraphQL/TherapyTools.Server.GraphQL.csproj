@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\common\TherapyTools.Domain.TherapyManagement\TherapyTools.Domain.TherapyManagement.csproj" />
     <ProjectReference Include="..\..\common\TherapyTools.Application.Common\TherapyTools.Application.Common.csproj" />
     <ProjectReference Include="..\..\common\TherapyTools.Domain.Common\TherapyTools.Domain.Common.csproj" />
+    <ProjectReference Include="..\TherapyTools.Infrastructure.InProcess\TherapyTools.Infrastructure.InProcess.csproj" />
   </ItemGroup>
 
 </Project>

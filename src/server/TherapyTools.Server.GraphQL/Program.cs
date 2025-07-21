@@ -1,11 +1,18 @@
+using TherapyTools.Infrastructure.InProcess;
 using TherapyTools.Domain.TherapyManagement;
+using TherapyTools.Domain.TherapyManagement.ValueObjects;
 using TherapyTools.Domain.Common.Interfaces;
-using Mediator;
-using TherapyTools.Domain.Common;
-using TherapyTools.Application.Common;
+using TherapyTools.Application.TherapyManagement.Commands;
 using TherapyTools.Application.TherapyManagement.IntegrationEvents;
+using TherapyTools.Application.TherapyManagement;
+using TherapyTools.Application.TherapyManagement.Queries;
+using Mediator;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add InProcessEventStore to DI
+builder.Services.AddSingleton<IEventStore<TherapyPlanId>, InProcessEventStore<TherapyPlanId>>();
+builder.Services.AddSingleton<IEventStore<TherapySessionId>, InProcessEventStore<TherapySessionId>>();
 
 // Add GraphQL services
 builder.Services
@@ -23,9 +30,56 @@ app.MapGraphQL();
 
 app.Run();
 
-// Placeholder mutation and subscription types
-public class Mutation;
+// Mutation type for all commands
+public class Mutation
+{
+    public async Task<bool> CreateTherapyPlan(
+        CreateTherapyPlanCommand command,
+        [Service] IMediator mediator)
+        => await mediator.Send(command) is not null;
 
+    public async Task<bool> ActivateTherapyPlan(
+        ActivateTherapyPlanCommand command,
+        [Service] IMediator mediator)
+        => await mediator.Send(command) is not null;
+
+    public async Task<bool> CompleteTherapyPlan(
+        CompleteTherapyPlanCommand command,
+        [Service] IMediator mediator)
+        => await mediator.Send(command) is not null;
+
+    public async Task<bool> DiscardTherapyPlan(
+        DiscardTherapyPlanCommand command,
+        [Service] IMediator mediator)
+        => await mediator.Send(command) is not null;
+
+    public async Task<bool> ScheduleTherapySession(
+        ScheduleTherapySessionCommand command,
+        [Service] IMediator mediator)
+        => await mediator.Send(command) is not null;
+
+    public async Task<bool> RescheduleTherapySession(
+        RescheduleTherapySessionCommand command,
+        [Service] IMediator mediator)
+        => await mediator.Send(command) is not null;
+
+    public async Task<bool> CancelTherapySession(
+        CancelTherapySessionCommand command,
+        [Service] IMediator mediator)
+        => await mediator.Send(command) is not null;
+
+    public async Task<bool> CompleteTherapySession(
+        CompleteTherapySessionCommand command,
+        [Service] IMediator mediator)
+        => await mediator.Send(command) is not null;
+
+    public async Task<bool> UpdateTherapySessionNotes(
+        UpdateTherapySessionNotesCommand command,
+        [Service] IMediator mediator)
+        => await mediator.Send(command) is not null;
+}
+
+// Subscription type remains unchanged
 public class Subscription
 {
     [Subscribe]
@@ -37,7 +91,6 @@ public class Subscription
     [Topic($"TherapySession_{{{nameof(id)}}}")]
     public TherapySessionIntegrationEvent OnTherapySessionChanged(TherapySessionId id, [EventMessage] TherapySessionIntegrationEvent @event)
         => @event;
-
 }
 
 // Query type for TherapyPlan and TherapySession
