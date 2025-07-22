@@ -11,7 +11,7 @@ public class DiscardTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventSt
     {
         if (state.Status == TherapyPlanStatus.Completed)
             throw new InvalidOperationException("Therapy plan cannot be discarded after completion.");
-        var domainEvents = new List<IDomainEvent> { new TherapyPlanDiscard(command.Id) };
+        var domainEvents = new List<IDomainEvent> { new TherapyPlanDiscarded(command.Id) };
         return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
     }
 }

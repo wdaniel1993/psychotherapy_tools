@@ -45,7 +45,7 @@ public static class TherapyPlanAggregate
             },
             TherapyPlanActivated _ => state with { Status = TherapyPlanStatus.Active },
             TherapyPlanCompleted _ => state with { Status = TherapyPlanStatus.Completed },
-            TherapyPlanDiscard _ => state with { Status = TherapyPlanStatus.Discarded },
+            TherapyPlanDiscarded _ => state with { Status = TherapyPlanStatus.Discarded },
             _ => state
         };
 
@@ -71,4 +71,4 @@ public static class TherapyPlanAggregate
 public record TherapyPlanCreated(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : AggregateDomainEvent<TherapyPlanId>(Id);
 public record TherapyPlanActivated(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
 public record TherapyPlanCompleted(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
-public record TherapyPlanDiscard(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
+public record TherapyPlanDiscarded(TherapyPlanId Id) : AggregateDomainEvent<TherapyPlanId>(Id);
