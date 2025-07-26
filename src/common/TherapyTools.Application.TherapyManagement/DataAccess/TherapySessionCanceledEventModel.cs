@@ -1,8 +1,7 @@
-using System;
-using TherapyTools.Application.TherapyManagement.Interfaces;
+using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
-public record TherapySessionCanceledEventModel(Guid Id) : ITherapySessionEventModel;
+public record TherapySessionCanceledEventModel(Guid AggregateId) : IAggregateEventModel;
 
 public static class TherapySessionCanceledEventModelMapper
 {
@@ -10,5 +9,5 @@ public static class TherapySessionCanceledEventModelMapper
         => new(domain.Id.ToGuid());
 
     public static TherapySessionCanceled ToDomain(this TherapySessionCanceledEventModel model)
-        => new(new TherapySessionId(model.Id));
+        => new(new TherapySessionId(model.AggregateId));
 }

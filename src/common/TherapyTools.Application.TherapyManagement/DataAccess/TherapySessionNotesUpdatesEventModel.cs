@@ -1,11 +1,10 @@
-using System;
-using TherapyTools.Application.TherapyManagement.Interfaces;
+using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
 public record TherapySessionNotesUpdatesEventModel(
-    Guid Id,
+    Guid AggregateId,
     string Notes
-) : ITherapySessionEventModel;
+) : IAggregateEventModel;
 
 public static class TherapySessionNotesUpdatesEventModelMapper
 {
@@ -17,7 +16,7 @@ public static class TherapySessionNotesUpdatesEventModelMapper
 
     public static TherapySessionNotesUpdates ToDomain(this TherapySessionNotesUpdatesEventModel model)
         => new(
-            new TherapySessionId(model.Id),
+            new TherapySessionId(model.AggregateId),
             new SessionNotes(model.Notes)
         );
 }

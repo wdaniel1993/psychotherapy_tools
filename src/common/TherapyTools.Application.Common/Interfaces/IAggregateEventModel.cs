@@ -2,5 +2,5 @@
 
 public interface IAggregateEventModel
 {
-    Guid Id { get; }
+    Guid AggregateId { get; }
 }

@@ -1,6 +1,5 @@
-using System;
+using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
-using TherapyTools.Domain.TherapyManagement.ValueObjects;
 
 public record TherapySessionModel(
     Guid AggregateId,
@@ -8,7 +7,7 @@ public record TherapySessionModel(
     TherapySessionType Type,
     string Notes,
     TherapySessionStatus Status
-);
+) : IAggregateModel ;
 
 public static class TherapySessionModelMapper
 {

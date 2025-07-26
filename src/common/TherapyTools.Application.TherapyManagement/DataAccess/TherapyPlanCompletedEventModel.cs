@@ -1,8 +1,7 @@
-using System;
-using TherapyTools.Application.TherapyManagement.Interfaces;
+using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
-public record TherapyPlanCompletedEventModel(Guid Id) : ITherapyPlanEventModel;
+public record TherapyPlanCompletedEventModel(Guid AggregateId) : IAggregateEventModel;
 
 public static class TherapyPlanCompletedEventModelMapper
 {
@@ -10,5 +9,5 @@ public static class TherapyPlanCompletedEventModelMapper
         => new(domain.Id.ToGuid());
 
     public static TherapyPlanCompleted ToDomain(this TherapyPlanCompletedEventModel model)
-        => new(new TherapyPlanId(model.Id));
+        => new(new TherapyPlanId(model.AggregateId));
 }

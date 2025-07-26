@@ -1,4 +1,3 @@
-using System;
 using TherapyTools.Domain.TherapyManagement.ValueObjects;
 
 public record TimeSlotModel(

@@ -1,12 +1,11 @@
-using System;
-using TherapyTools.Application.TherapyManagement.Interfaces;
+using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
 public record TherapyPlanCreatedEventModel(
-    Guid Id,
+    Guid AggregateId,
     List<GoalModel> GoalList,
     string Description
-) : ITherapyPlanEventModel;
+) : IAggregateEventModel;
 
 public static class TherapyPlanCreatedEventModelMapper
 {
@@ -19,7 +18,7 @@ public static class TherapyPlanCreatedEventModelMapper
 
     public static TherapyPlanCreated ToDomain(this TherapyPlanCreatedEventModel model)
         => new(
-            new TherapyPlanId(model.Id),
+            new TherapyPlanId(model.AggregateId),
             new GoalList(model.GoalList.ToDomainList()),
             new TherapyPlanDescription(model.Description)
         );

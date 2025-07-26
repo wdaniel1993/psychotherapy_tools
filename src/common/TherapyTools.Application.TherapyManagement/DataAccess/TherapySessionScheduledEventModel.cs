@@ -1,14 +1,12 @@
-using System;
-using TherapyTools.Application.TherapyManagement.Interfaces;
+using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
-using TherapyTools.Domain.TherapyManagement.ValueObjects;
 
 public record TherapySessionScheduledEventModel(
-    Guid Id,
+    Guid AggregateId,
     TimeSlotModel SessionTimeSlot,
     TherapySessionType Type,
     string Notes
-) : ITherapySessionEventModel;
+) : IAggregateEventModel;
 
 public static class TherapySessionScheduledEventModelMapper
 {
@@ -22,7 +20,7 @@ public static class TherapySessionScheduledEventModelMapper
 
     public static TherapySessionScheduled ToDomain(this TherapySessionScheduledEventModel model)
         => new(
-            new TherapySessionId(model.Id),
+            new TherapySessionId(model.AggregateId),
             model.SessionTimeSlot.ToDomain(),
             model.Type,
             new SessionNotes(model.Notes)

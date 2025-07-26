@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
 public record TherapyPlanModel(
@@ -7,7 +6,7 @@ public record TherapyPlanModel(
     List<GoalModel> GoalList,
     string Description,
     TherapyPlanStatus Status
-);
+) : IAggregateModel;
 
 public static class TherapyPlanModelMapper
 {

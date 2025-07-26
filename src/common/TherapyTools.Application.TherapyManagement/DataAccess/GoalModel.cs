@@ -1,6 +1,4 @@
 using TherapyTools.Domain.TherapyManagement;
-using System.Collections.Generic;
-using System.Linq;
 
 public record GoalModel(
     string Title,

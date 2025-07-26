@@ -1,11 +1,8 @@
 using TherapyTools.Infrastructure.InProcess;
 using TherapyTools.Domain.TherapyManagement;
-using TherapyTools.Domain.TherapyManagement.ValueObjects;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Application.TherapyManagement.Commands;
 using TherapyTools.Application.TherapyManagement.IntegrationEvents;
-using TherapyTools.Application.TherapyManagement;
-using TherapyTools.Application.TherapyManagement.Queries;
 using Mediator;
 
 var builder = WebApplication.CreateBuilder(args);
