@@ -7,17 +7,17 @@ namespace TherapyTools.Application.Common;
 public abstract record AggregateIntegrationEvent<TAggregateId>(
     string EventName,
     IntegrationEventType EventType,
-    IAggregateDomainEvent<TAggregateId>? Event,
+    IAggregateEventModel? Event,
     AggregateState<TAggregateId>? State
 ) : IAggregateIntegrationEvent<TAggregateId>
     where TAggregateId : IAggregateId
 {
-    public TAggregateId AggregateId
+    public Guid AggregateId
     {
         get
         {
             if (Event is not null)
-                return Event.AggregateId;
+                return Event.Id;
             if (State is not null)
                 return State.AggregateId;
             throw new InvalidOperationException("AggregateId is not set in the event or state.");
