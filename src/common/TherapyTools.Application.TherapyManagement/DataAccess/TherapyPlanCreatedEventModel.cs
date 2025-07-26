@@ -12,7 +12,7 @@ public static class TherapyPlanCreatedEventModelMapper
     public static TherapyPlanCreatedEventModel ToModel(this TherapyPlanCreated domain)
         => new(
             domain.Id.ToGuid(),
-            domain.GoalList.Goals.ToModelList(),
+            domain.GoalList.ToModelList(),
             domain.Description.Content
         );
 

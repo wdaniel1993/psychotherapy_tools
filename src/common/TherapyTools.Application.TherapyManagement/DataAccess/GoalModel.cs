@@ -13,9 +13,9 @@ public static class GoalModelMapper
     public static Goal ToDomain(this GoalModel model)
         => new(model.Title, model.Description);
 
-    public static List<GoalModel> ToModelList(this IEnumerable<Goal> goals)
-        => new(goals.Select(g => g.ToModel()));
+    public static List<GoalModel> ToModelList(this GoalList goalList)
+        => goalList.Goals.Select(g => g.ToModel()).ToList();
 
-    public static List<Goal> ToDomainList(this IEnumerable<GoalModel> models)
-        => new(models.Select(m => m.ToDomain()));
+    public static GoalList ToDomainList(this IEnumerable<GoalModel> models)
+        => new(models.Select(m => m.ToDomain()).ToList());
 }

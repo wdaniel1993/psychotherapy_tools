@@ -1,5 +1,5 @@
-using Mediator;
 using TherapyTools.Application.Common;
+using TherapyTools.Application.TherapyManagement.IntegrationEvents;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
@@ -9,9 +9,14 @@ public class CreateTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventSto
 {
     protected override Task<CommandResult> Handle(CreateTherapyPlanCommand command, TherapyPlanState state)
     {
-        if(state.Status != TherapyPlanStatus.Draft)
-            throw new InvalidOperationException("Therapy plan must be in draft status to be created.");
-        var domainEvents = new List<IDomainEvent> { new TherapyPlanCreated(command.Id, command.GoalList, command.Description) };
-        return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
+        var domainEvent = new TherapyPlanCreated(command.Id, command.GoalList, command.Description);
+        var newState = TherapyPlanAggregate.Apply(state, domainEvent);
+        var integrationEvent = new TherapyPlanIntegrationEvent(
+            nameof(TherapyPlanCreated),
+            IntegrationEventType.Created,
+            domainEvent.ToModel(),
+            newState.ToModel()
+        );
+        return Task.FromResult(new CommandResult([domainEvent], [integrationEvent]));
     }
 }
