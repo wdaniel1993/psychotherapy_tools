@@ -1,15 +1,26 @@
-using TherapyTools.Infrastructure.InProcess;
-using TherapyTools.Domain.TherapyManagement;
-using TherapyTools.Domain.Common.Interfaces;
+using Mediator;
 using TherapyTools.Application.TherapyManagement.Commands;
 using TherapyTools.Application.TherapyManagement.IntegrationEvents;
-using Mediator;
+using TherapyTools.Domain.Common.Interfaces;
+using TherapyTools.Domain.TherapyManagement;
+using TherapyTools.Infrastructure.InProcess;
+using TherapyTools.Server.GraphQL.Mediator;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add InProcessEventStore to DI
 builder.Services.AddSingleton<IEventStore<TherapyPlanId>, InProcessEventStore<TherapyPlanId>>();
 builder.Services.AddSingleton<IEventStore<TherapySessionId>, InProcessEventStore<TherapySessionId>>();
+
+builder.Services.AddMediator((MediatorOptions options) =>
+{
+    options.ServiceLifetime = ServiceLifetime.Singleton;
+    options.GenerateTypesAsInternal = true;
+    options.NotificationPublisherType = typeof(Mediator.ForeachAwaitPublisher);
+    options.PipelineBehaviors = [typeof(CommandValidatorPipelineBehaviour<,>)];
+    options.StreamPipelineBehaviors = [];
+});
+
 
 // Add GraphQL services
 builder.Services
