@@ -1,5 +1,5 @@
-using Mediator;
 using TherapyTools.Application.Common;
+using TherapyTools.Application.TherapyManagement.IntegrationEvents;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
@@ -13,7 +13,14 @@ public class CompleteTherapySessionCommandHandler(IEventStore<TherapySessionId> 
             throw new InvalidOperationException("Cannot complete a session that is already done.");
         if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot complete a session that is not scheduled.");
-        var domainEvents = new List<IDomainEvent> { new TherapySessionCompleted(command.Id, command.Notes) };
-        return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
+        var domainEvent = new TherapySessionCompleted(command.Id, command.Notes);
+        var newState = TherapySessionAggregate.Apply(state, domainEvent);
+        var integrationEvent = new TherapySessionIntegrationEvent(
+            nameof(TherapySessionCompleted),
+            IntegrationEventType.Updated,
+            domainEvent.ToModel(),
+            newState.ToModel()
+        );
+        return Task.FromResult(new CommandResult([domainEvent], [integrationEvent]));
     }
 }

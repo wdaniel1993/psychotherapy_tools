@@ -1,5 +1,5 @@
-using Mediator;
 using TherapyTools.Application.Common;
+using TherapyTools.Application.TherapyManagement.IntegrationEvents;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
@@ -13,7 +13,14 @@ public class RescheduleTherapySessionCommandHandler(IEventStore<TherapySessionId
             throw new InvalidOperationException("Cannot reschedule a session to a time in the past.");
         if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot reschedule a session that is not scheduled.");
-        var domainEvents = new List<IDomainEvent> { new TherapySessionRescheduled(command.Id, command.NewSlot) };
-        return Task.FromResult(new CommandResult(domainEvents, new List<INotification>()));
+        var domainEvent = new TherapySessionRescheduled(command.Id, command.NewSlot);
+        var newState = TherapySessionAggregate.Apply(state, domainEvent);
+        var integrationEvent = new TherapySessionIntegrationEvent(
+            nameof(TherapySessionRescheduled),
+            IntegrationEventType.Updated,
+            domainEvent.ToModel(),
+            newState.ToModel()
+        );
+        return Task.FromResult(new CommandResult([domainEvent], [integrationEvent]));
     }
 }

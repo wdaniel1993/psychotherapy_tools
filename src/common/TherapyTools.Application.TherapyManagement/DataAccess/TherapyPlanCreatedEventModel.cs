@@ -19,7 +19,7 @@ public static class TherapyPlanCreatedEventModelMapper
     public static TherapyPlanCreated ToDomain(this TherapyPlanCreatedEventModel model)
         => new(
             new TherapyPlanId(model.AggregateId),
-            new GoalList(model.GoalList.ToDomainList()),
+            model.GoalList.ToDomainList(),
             new TherapyPlanDescription(model.Description)
         );
 }
