@@ -8,9 +8,9 @@ using TherapyTools.Server.GraphQL.Mediator;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add InProcessEventStore to DI
 builder.Services.AddSingleton<IEventStore<TherapyPlanId>, InProcessEventStore<TherapyPlanId>>();
 builder.Services.AddSingleton<IEventStore<TherapySessionId>, InProcessEventStore<TherapySessionId>>();
+builder.Services.AddSingleton<InProcessNotificationStore>();
 
 builder.Services.AddMediator((MediatorOptions options) =>
 {
