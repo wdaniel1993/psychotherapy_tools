@@ -1,5 +1,7 @@
 using TherapyTools.Domain.TherapyManagement.ValueObjects;
 
+namespace TherapyTools.Application.TherapyManagement.DataAccess;
+
 public record TimeSlotModel(
     DateTime Start,
     DateTime End

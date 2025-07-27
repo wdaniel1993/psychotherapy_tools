@@ -1,6 +1,8 @@
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
+namespace TherapyTools.Application.TherapyManagement.DataAccess;
+
 public record TherapyPlanActivatedEventModel(Guid AggregateId) : IAggregateEventModel;
 
 public static class TherapyPlanActivatedEventModelMapper

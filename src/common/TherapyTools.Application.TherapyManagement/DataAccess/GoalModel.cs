@@ -1,5 +1,7 @@
 using TherapyTools.Domain.TherapyManagement;
 
+namespace TherapyTools.Application.TherapyManagement.DataAccess;
+
 public record GoalModel(
     string Title,
     string Description

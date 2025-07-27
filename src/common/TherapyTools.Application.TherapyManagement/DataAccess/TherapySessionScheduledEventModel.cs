@@ -1,6 +1,8 @@
 using TherapyTools.Application.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
 
+namespace TherapyTools.Application.TherapyManagement.DataAccess;
+
 public record TherapySessionScheduledEventModel(
     Guid AggregateId,
     TimeSlotModel SessionTimeSlot,

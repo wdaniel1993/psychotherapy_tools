@@ -1,0 +1,22 @@
+using HotChocolate;
+using HotChocolate.Types;
+using TherapyTools.Application.TherapyManagement.DataAccess;
+
+namespace TherapyTools.Server.GraphQL.Types;
+
+/// <summary>
+/// Represents a time slot with a start and end date/time.
+/// </summary>
+public class TimeSlotModelType : ObjectType<TimeSlotModel>
+{
+    protected override void Configure(IObjectTypeDescriptor<TimeSlotModel> descriptor)
+    {
+        descriptor.Name("TimeSlotModel");
+        descriptor.Description("Represents a time slot with a start and end date/time.");
+
+        descriptor.Field(f => f.Start)
+            .Description("The start date and time of the time slot.");
+        descriptor.Field(f => f.End)
+            .Description("The end date and time of the time slot.");
+    }
+}

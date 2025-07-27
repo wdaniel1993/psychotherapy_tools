@@ -1,4 +1,5 @@
 using TherapyTools.Application.Common;
+using TherapyTools.Application.TherapyManagement.DataAccess;
 using TherapyTools.Application.TherapyManagement.IntegrationEvents;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;

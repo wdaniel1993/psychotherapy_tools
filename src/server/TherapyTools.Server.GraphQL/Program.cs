@@ -28,6 +28,7 @@ builder.Services
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddSubscriptionType<Subscription>()
+    .AddGraphQLTypes()
     .AddInMemorySubscriptions();
 
 var app = builder.Build();
