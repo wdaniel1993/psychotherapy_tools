@@ -1,5 +1,6 @@
 using Mediator;
 using TherapyTools.Application.TherapyManagement.Commands;
+using TherapyTools.Application.TherapyManagement.DataAccess;
 using TherapyTools.Application.TherapyManagement.IntegrationEvents;
 using TherapyTools.Domain.Common.Interfaces;
 using TherapyTools.Domain.TherapyManagement;
@@ -105,17 +106,17 @@ public class Subscription
 // Query type for TherapyPlan and TherapySession
 public class Query
 {
-    public async Task<TherapyPlanState?> GetTherapyPlanById(
+    public async Task<TherapyPlanModel?> GetTherapyPlanById(
         TherapyPlanId id,
         [Service] IEventStore<TherapyPlanId> eventStore)
     {
-        return await TherapyPlanAggregate.GetCurrentState(eventStore, id);
+        return (await TherapyPlanAggregate.GetCurrentState(eventStore, id)).ToModel();
     }
 
-    public async Task<TherapySessionState?> GetTherapySessionById(
+    public async Task<TherapySessionModel?> GetTherapySessionById(
         TherapySessionId id,
         [Service] IEventStore<TherapySessionId> eventStore)
     {
-        return await TherapySessionAggregate.GetCurrentState(eventStore, id);
+        return (await TherapySessionAggregate.GetCurrentState(eventStore, id)).ToModel();
     }
 }
