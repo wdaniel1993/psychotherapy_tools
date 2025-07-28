@@ -5,7 +5,7 @@ namespace TherapyTools.Server.GraphQL.Definitions;
 /// <summary>
 /// Represents an aggregate model with a unique identifier.
 /// </summary>
-public class AggregateModelType : InterfaceType<IAggregateModel>
+public class AggregateModelTypeDefinition : InterfaceType<IAggregateModel>
 {
     protected override void Configure(IInterfaceTypeDescriptor<IAggregateModel> descriptor)
     {

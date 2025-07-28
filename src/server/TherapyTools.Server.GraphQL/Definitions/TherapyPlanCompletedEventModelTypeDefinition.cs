@@ -5,7 +5,7 @@ namespace TherapyTools.Server.GraphQL.Definitions;
 /// <summary>
 /// Event model for when a therapy plan is completed.
 /// </summary>
-public class TherapyPlanCompletedEventModelType : ObjectType<TherapyPlanCompletedEventModel>
+public class TherapyPlanCompletedEventModelTypeDefinition : ObjectType<TherapyPlanCompletedEventModel>
 {
     protected override void Configure(IObjectTypeDescriptor<TherapyPlanCompletedEventModel> descriptor)
     {

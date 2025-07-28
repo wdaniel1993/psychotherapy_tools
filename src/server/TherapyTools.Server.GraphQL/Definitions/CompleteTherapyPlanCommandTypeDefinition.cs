@@ -5,7 +5,7 @@ namespace TherapyTools.Server.GraphQL.Definitions;
 /// <summary>
 /// Command to complete a therapy plan.
 /// </summary>
-public class CompleteTherapyPlanCommandType : ObjectType<CompleteTherapyPlanCommand>
+public class CompleteTherapyPlanCommandTypeDefinition : ObjectType<CompleteTherapyPlanCommand>
 {
     protected override void Configure(IObjectTypeDescriptor<CompleteTherapyPlanCommand> descriptor)
     {
