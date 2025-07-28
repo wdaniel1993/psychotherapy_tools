@@ -12,7 +12,7 @@ public class DiscardTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventSt
     {
         if(state.Status == TherapyPlanStatus.Discarded)
             throw new InvalidOperationException("Therapy plan is already discarded.");
-        var domainEvent = new TherapyPlanDiscarded(command.Id);
+        var domainEvent = new TherapyPlanDiscarded(new TherapyPlanId(command.Id));
         var newState = TherapyPlanAggregate.Apply(state, domainEvent);
         var integrationEvent = new TherapyPlanIntegrationEvent(
             nameof(TherapyPlanDiscarded),

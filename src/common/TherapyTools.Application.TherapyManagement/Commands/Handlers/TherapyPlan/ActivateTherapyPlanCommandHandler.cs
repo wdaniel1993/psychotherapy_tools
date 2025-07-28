@@ -12,7 +12,7 @@ public class ActivateTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventS
     {
         if(state.Status != TherapyPlanStatus.Draft)
             throw new InvalidOperationException("Therapy plan must be in draft status to be activated.");
-        var domainEvent = new TherapyPlanActivated(command.Id);
+        var domainEvent = new TherapyPlanActivated(new TherapyPlanId(command.Id));
         var newState = TherapyPlanAggregate.Apply(state, domainEvent);
         var integrationEvent = new TherapyPlanIntegrationEvent(
             nameof(TherapyPlanActivated),

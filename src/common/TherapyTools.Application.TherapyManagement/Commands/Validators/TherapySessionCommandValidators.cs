@@ -6,13 +6,13 @@ public class ScheduleTherapySessionCommandValidator : AbstractValidator<Schedule
 {
     public ScheduleTherapySessionCommandValidator()
     {
-        RuleFor(x => x.Id).NotNull();
+        RuleFor(x => x.Id).NotEmpty();
         RuleFor(x => x.SessionTimeSlot)
             .NotNull()
             .Must(slot => slot.Start < slot.End)
             .WithMessage("Session start must be before end.");
         RuleFor(x => x.Type).IsInEnum();
-        RuleFor(x => x.Notes.Content).NotEmpty();
+        RuleFor(x => x.Notes).NotEmpty();
     }
 }
 
@@ -20,7 +20,7 @@ public class RescheduleTherapySessionCommandValidator : AbstractValidator<Resche
 {
     public RescheduleTherapySessionCommandValidator()
     {
-        RuleFor(x => x.Id).NotNull();
+        RuleFor(x => x.Id).NotEmpty();
         RuleFor(x => x.NewSlot)
             .NotNull()
             .Must(slot => slot.Start < slot.End)
@@ -32,7 +32,7 @@ public class CancelTherapySessionCommandValidator : AbstractValidator<CancelTher
 {
     public CancelTherapySessionCommandValidator()
     {
-        RuleFor(x => x.Id).NotNull();
+        RuleFor(x => x.Id).NotEmpty();
     }
 }
 
@@ -40,8 +40,8 @@ public class CompleteTherapySessionCommandValidator : AbstractValidator<Complete
 {
     public CompleteTherapySessionCommandValidator()
     {
-        RuleFor(x => x.Id).NotNull();
-        RuleFor(x => x.Notes.Content).NotEmpty();
+        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Notes).NotEmpty();
     }
 }
 
@@ -49,7 +49,7 @@ public class UpdateTherapySessionNotesCommandValidator : AbstractValidator<Updat
 {
     public UpdateTherapySessionNotesCommandValidator()
     {
-        RuleFor(x => x.Id).NotNull();
-        RuleFor(x => x.Notes.Content).NotEmpty();
+        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Notes).NotEmpty();
     }
 }

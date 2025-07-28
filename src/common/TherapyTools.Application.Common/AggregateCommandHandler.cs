@@ -6,15 +6,15 @@ using TherapyTools.Domain.Common.Interfaces;
 namespace TherapyTools.Application.Common;
 
 public abstract class AggregateCommandHandler<TCommand, TAggregateId, TAggregateState>(IEventStore<TAggregateId> eventStore) : ICommandHandler<TCommand, CommandResult>
-    where TCommand : IAggregateCommand<TAggregateId>
+    where TCommand : IAggregateCommand
     where TAggregateId : IAggregateId
     where TAggregateState : AggregateState<TAggregateId>
 {
-    private readonly IEventStore<TAggregateId> _eventStore = eventStore;
+    protected abstract TAggregateId FromGuid(Guid id);
 
     public async ValueTask<CommandResult> Handle(TCommand command, CancellationToken cancellationToken)
     {
-        var events = await _eventStore.GetEvents(command.AggregateId);
+        var events = await eventStore.GetEvents(FromGuid(command.AggregateId));
         var state = CreateStateFromEvents(events);
         return await Handle(command, state);
     }

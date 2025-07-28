@@ -12,7 +12,7 @@ public class CancelTherapySessionCommandHandler(IEventStore<TherapySessionId> ev
     {
         if (state.Status == TherapySessionStatus.Canceled)
             throw new InvalidOperationException("Session is already canceled.");
-        var domainEvent = new TherapySessionCanceled(command.Id);
+        var domainEvent = new TherapySessionCanceled(new TherapySessionId(command.Id));
         var newState = TherapySessionAggregate.Apply(state, domainEvent);
         var integrationEvent = new TherapySessionIntegrationEvent(
             nameof(TherapySessionCanceled),

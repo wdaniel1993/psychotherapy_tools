@@ -14,7 +14,7 @@ public class ScheduleTherapySessionCommandHandler(IEventStore<TherapySessionId> 
             throw new InvalidOperationException("Cannot schedule a session in the past.");
         if (state.Status != TherapySessionStatus.Unconfirmed)
             throw new InvalidOperationException("Cannot schedule a session that is already scheduled or canceled.");
-        var domainEvent = new TherapySessionScheduled(command.Id, command.SessionTimeSlot, command.Type, command.Notes);
+        var domainEvent = new TherapySessionScheduled(new TherapySessionId(command.Id), command.SessionTimeSlot.ToDomain(), command.Type, new SessionNotes(command.Notes));
         var newState = TherapySessionAggregate.Apply(state, domainEvent);
         var integrationEvent = new TherapySessionIntegrationEvent(
             nameof(TherapySessionScheduled),

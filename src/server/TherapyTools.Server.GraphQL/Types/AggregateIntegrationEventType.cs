@@ -1,7 +1,4 @@
-using HotChocolate;
-using HotChocolate.Types;
 using TherapyTools.Application.Common.Interfaces;
-using TherapyTools.Application.Common;
 
 namespace TherapyTools.Server.GraphQL.Types;
 

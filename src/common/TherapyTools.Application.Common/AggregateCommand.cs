@@ -1,10 +1,8 @@
 ﻿using TherapyTools.Application.Common.Interfaces;
-using TherapyTools.Domain.Common.Interfaces;
 
 namespace TherapyTools.Application.Common;
 
-public abstract record AggregateCommand<TAggregateId>(TAggregateId Id) : IAggregateCommand<TAggregateId>
-    where TAggregateId : IAggregateId
+public abstract record AggregateCommand(Guid Id) : IAggregateCommand
 {
-    public TAggregateId AggregateId => Id;
+    public Guid AggregateId => Id;
 }

@@ -10,7 +10,7 @@ public class CreateTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventSto
 {
     protected override Task<CommandResult> Handle(CreateTherapyPlanCommand command, TherapyPlanState state)
     {
-        var domainEvent = new TherapyPlanCreated(command.Id, command.GoalList, command.Description);
+        var domainEvent = new TherapyPlanCreated(new TherapyPlanId(command.Id), command.GoalList.ToDomainList(), new TherapyPlanDescription(command.Description));
         var newState = TherapyPlanAggregate.Apply(state, domainEvent);
         var integrationEvent = new TherapyPlanIntegrationEvent(
             nameof(TherapyPlanCreated),

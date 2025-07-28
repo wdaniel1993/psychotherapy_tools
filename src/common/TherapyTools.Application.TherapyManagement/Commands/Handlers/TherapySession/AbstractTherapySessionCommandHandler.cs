@@ -7,8 +7,10 @@ namespace TherapyTools.Application.TherapyManagement.Commands.Handlers.TherapySe
 
 public abstract class AbstractTherapySessionCommandHandler<TCommand>(IEventStore<TherapySessionId> eventStore)
     : AggregateCommandHandler<TCommand, TherapySessionId, TherapySessionState>(eventStore)
-    where TCommand : IAggregateCommand<TherapySessionId>
+    where TCommand : IAggregateCommand
 {
     protected override TherapySessionState CreateStateFromEvents(IEnumerable<IDomainEvent> events)
         => TherapySessionAggregate.Replay(events);
+
+    protected override TherapySessionId FromGuid(Guid id) => new(id);
 }

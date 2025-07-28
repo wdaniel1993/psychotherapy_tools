@@ -1,5 +1,3 @@
-using HotChocolate;
-using HotChocolate.Types;
 using TherapyTools.Domain.TherapyManagement;
 
 namespace TherapyTools.Server.GraphQL.Types;

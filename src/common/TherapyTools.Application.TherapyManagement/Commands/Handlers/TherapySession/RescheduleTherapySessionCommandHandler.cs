@@ -14,7 +14,7 @@ public class RescheduleTherapySessionCommandHandler(IEventStore<TherapySessionId
             throw new InvalidOperationException("Cannot reschedule a session to a time in the past.");
         if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot reschedule a session that is not scheduled.");
-        var domainEvent = new TherapySessionRescheduled(command.Id, command.NewSlot);
+        var domainEvent = new TherapySessionRescheduled(new TherapySessionId(command.Id), command.NewSlot.ToDomain());
         var newState = TherapySessionAggregate.Apply(state, domainEvent);
         var integrationEvent = new TherapySessionIntegrationEvent(
             nameof(TherapySessionRescheduled),

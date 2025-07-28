@@ -12,7 +12,7 @@ public class CompleteTherapyPlanCommandHandler(IEventStore<TherapyPlanId> eventS
     {
         if(state.Status != TherapyPlanStatus.Active)
             throw new InvalidOperationException("Therapy plan must be in active status to be completed.");
-        var domainEvent = new TherapyPlanCompleted(command.Id);
+        var domainEvent = new TherapyPlanCompleted(new TherapyPlanId(command.Id));
         var newState = TherapyPlanAggregate.Apply(state, domainEvent);
         var integrationEvent = new TherapyPlanIntegrationEvent(
             nameof(TherapyPlanCompleted),

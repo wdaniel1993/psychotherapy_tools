@@ -15,7 +15,6 @@ public enum TherapyPlanStatus
 public readonly record struct TherapyPlanId(Guid Value) : IAggregateId
 {
     public static TherapyPlanId New() => new(Guid.NewGuid());
-    public static TherapyPlanId From(Guid id) => new(id);
     public Guid ToGuid() => Value;
 }
 

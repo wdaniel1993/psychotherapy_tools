@@ -12,7 +12,7 @@ public class UpdateTherapySessionNotesCommandHandler(IEventStore<TherapySessionI
     {
         if (state.Status != TherapySessionStatus.Unconfirmed)
             throw new InvalidOperationException("Cannot update notes for a session that is not unconfirmed.");
-        var domainEvent = new TherapySessionNotesUpdates(command.Id, command.Notes);
+        var domainEvent = new TherapySessionNotesUpdates(new TherapySessionId(command.Id), new SessionNotes(command.Notes));
         var newState = TherapySessionAggregate.Apply(state, domainEvent);
         var integrationEvent = new TherapySessionIntegrationEvent(
             nameof(TherapySessionNotesUpdates),

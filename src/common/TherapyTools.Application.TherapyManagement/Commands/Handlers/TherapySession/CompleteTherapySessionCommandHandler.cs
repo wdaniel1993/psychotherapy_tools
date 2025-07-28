@@ -14,7 +14,7 @@ public class CompleteTherapySessionCommandHandler(IEventStore<TherapySessionId> 
             throw new InvalidOperationException("Cannot complete a session that is already done.");
         if (state.Status != TherapySessionStatus.Scheduled)
             throw new InvalidOperationException("Cannot complete a session that is not scheduled.");
-        var domainEvent = new TherapySessionCompleted(command.Id, command.Notes);
+        var domainEvent = new TherapySessionCompleted(new TherapySessionId(command.Id), new SessionNotes(command.Notes));
         var newState = TherapySessionAggregate.Apply(state, domainEvent);
         var integrationEvent = new TherapySessionIntegrationEvent(
             nameof(TherapySessionCompleted),

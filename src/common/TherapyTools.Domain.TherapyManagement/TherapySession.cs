@@ -22,7 +22,6 @@ public enum TherapySessionType
 public readonly record struct TherapySessionId(Guid Id) : IAggregateId
 {
     public static TherapySessionId New() => new(Guid.NewGuid());
-    public static TherapySessionId From(Guid id) => new(id);
     public Guid ToGuid() => Id;
 }
 

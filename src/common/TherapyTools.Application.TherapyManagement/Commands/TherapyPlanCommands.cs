@@ -1,9 +1,9 @@
 ﻿using TherapyTools.Application.Common;
-using TherapyTools.Domain.TherapyManagement;
+using TherapyTools.Application.TherapyManagement.DataAccess;
 
 namespace TherapyTools.Application.TherapyManagement.Commands;
 
-public record CreateTherapyPlanCommand(TherapyPlanId Id, GoalList GoalList, TherapyPlanDescription Description) : AggregateCommand<TherapyPlanId>(Id); 
-public record ActivateTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);
-public record CompleteTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);
-public record DiscardTherapyPlanCommand(TherapyPlanId Id) : AggregateCommand<TherapyPlanId>(Id);
+public record CreateTherapyPlanCommand(Guid Id, List<GoalModel> GoalList, string Description) : AggregateCommand(Id); 
+public record ActivateTherapyPlanCommand(Guid Id) : AggregateCommand(Id);
+public record CompleteTherapyPlanCommand(Guid Id) : AggregateCommand(Id);
+public record DiscardTherapyPlanCommand(Guid Id) : AggregateCommand(Id);
