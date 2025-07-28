@@ -1,11 +1,11 @@
 using TherapyTools.Domain.TherapyManagement;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Represents the type of therapy session.
 /// </summary>
-public class TherapySessionTypeType : EnumType<TherapySessionType>
+public sealed class TherapySessionTypeTypeDefinition : EnumType<TherapySessionType>
 {
     protected override void Configure(IEnumTypeDescriptor<TherapySessionType> descriptor)
     {

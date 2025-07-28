@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.DataAccess;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Represents a therapy session, including its time slot, type, notes, and status.
 /// </summary>
-public class TherapySessionModelType : ObjectType<TherapySessionModel>
+public sealed class TherapySessionModelTypeDefinition : ObjectType<TherapySessionModel>
 {
     protected override void Configure(IObjectTypeDescriptor<TherapySessionModel> descriptor)
     {

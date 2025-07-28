@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.Commands;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Command to cancel a therapy session.
 /// </summary>
-public class CancelTherapySessionCommandType : ObjectType<CancelTherapySessionCommand>
+public sealed class CancelTherapySessionCommandTypeDefinition : ObjectType<CancelTherapySessionCommand>
 {
     protected override void Configure(IObjectTypeDescriptor<CancelTherapySessionCommand> descriptor)
     {

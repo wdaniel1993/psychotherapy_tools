@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.Commands;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Command to schedule a new therapy session.
 /// </summary>
-public class ScheduleTherapySessionCommandType : ObjectType<ScheduleTherapySessionCommand>
+public sealed class ScheduleTherapySessionCommandTypeDefinition : ObjectType<ScheduleTherapySessionCommand>
 {
     protected override void Configure(IObjectTypeDescriptor<ScheduleTherapySessionCommand> descriptor)
     {

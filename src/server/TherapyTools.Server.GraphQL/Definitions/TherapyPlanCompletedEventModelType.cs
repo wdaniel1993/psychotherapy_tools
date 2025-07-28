@@ -1,6 +1,6 @@
 using TherapyTools.Application.TherapyManagement.DataAccess;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Event model for when a therapy plan is completed.

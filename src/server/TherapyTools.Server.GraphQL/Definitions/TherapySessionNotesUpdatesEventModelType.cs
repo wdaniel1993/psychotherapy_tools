@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.DataAccess;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Event model for when notes are updated for a therapy session.
 /// </summary>
-public class TherapySessionNotesUpdatesEventModelType : ObjectType<TherapySessionNotesUpdatesEventModel>
+public sealed class TherapySessionNotesUpdatesEventModelTypeDefinition : ObjectType<TherapySessionNotesUpdatesEventModel>
 {
     protected override void Configure(IObjectTypeDescriptor<TherapySessionNotesUpdatesEventModel> descriptor)
     {

@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.DataAccess;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Event model for when a therapy session is canceled.
 /// </summary>
-public class TherapySessionCanceledEventModelType : ObjectType<TherapySessionCanceledEventModel>
+public sealed class TherapySessionCanceledEventModelTypeDefinition : ObjectType<TherapySessionCanceledEventModel>
 {
     protected override void Configure(IObjectTypeDescriptor<TherapySessionCanceledEventModel> descriptor)
     {

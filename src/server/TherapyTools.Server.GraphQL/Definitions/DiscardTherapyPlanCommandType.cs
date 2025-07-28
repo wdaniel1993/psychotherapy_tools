@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.Commands;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Command to discard a therapy plan.
 /// </summary>
-public class DiscardTherapyPlanCommandType : ObjectType<DiscardTherapyPlanCommand>
+public sealed class DiscardTherapyPlanCommandTypeDefinition : ObjectType<DiscardTherapyPlanCommand>
 {
     protected override void Configure(IObjectTypeDescriptor<DiscardTherapyPlanCommand> descriptor)
     {

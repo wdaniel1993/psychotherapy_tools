@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.Commands;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Command to update notes for a therapy session.
 /// </summary>
-public class UpdateTherapySessionNotesCommandType : ObjectType<UpdateTherapySessionNotesCommand>
+public sealed class UpdateTherapySessionNotesCommandTypeDefinition : ObjectType<UpdateTherapySessionNotesCommand>
 {
     protected override void Configure(IObjectTypeDescriptor<UpdateTherapySessionNotesCommand> descriptor)
     {

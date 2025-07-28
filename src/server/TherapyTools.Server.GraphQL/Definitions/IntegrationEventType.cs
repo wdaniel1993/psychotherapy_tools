@@ -1,11 +1,11 @@
 using TherapyTools.Application.Common.Interfaces;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Represents a general integration event, including event name and type.
 /// </summary>
-public class IntegrationEventTypeType : InterfaceType<IIntegrationEvent>
+public sealed class IntegrationEventTypeDefinition : InterfaceType<IIntegrationEvent>
 {
     protected override void Configure(IInterfaceTypeDescriptor<IIntegrationEvent> descriptor)
     {

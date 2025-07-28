@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.DataAccess;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Event model for when a therapy session is scheduled.
 /// </summary>
-public class TherapySessionScheduledEventModelType : ObjectType<TherapySessionScheduledEventModel>
+public sealed class TherapySessionScheduledEventModelTypeDefinition : ObjectType<TherapySessionScheduledEventModel>
 {
     protected override void Configure(IObjectTypeDescriptor<TherapySessionScheduledEventModel> descriptor)
     {

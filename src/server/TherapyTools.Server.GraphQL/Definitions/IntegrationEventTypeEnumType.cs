@@ -1,11 +1,11 @@
 using TherapyTools.Application.Common;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Represents the type of integration event.
 /// </summary>
-public class IntegrationEventTypeEnumType : EnumType<IntegrationEventType>
+public sealed class IntegrationEventTypeEnumTypeDefinition : EnumType<IntegrationEventType>
 {
     protected override void Configure(IEnumTypeDescriptor<IntegrationEventType> descriptor)
     {

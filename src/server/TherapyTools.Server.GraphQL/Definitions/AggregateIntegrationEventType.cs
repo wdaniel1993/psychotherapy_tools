@@ -1,11 +1,11 @@
 using TherapyTools.Application.Common.Interfaces;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Represents an integration event for an aggregate, including event name, type, and aggregate ID.
 /// </summary>
-public class AggregateIntegrationEventType : InterfaceType<IAggregateIntegrationEvent>
+public sealed class AggregateIntegrationEventTypeDefinition : InterfaceType<IAggregateIntegrationEvent>
 {
     protected override void Configure(IInterfaceTypeDescriptor<IAggregateIntegrationEvent> descriptor)
     {

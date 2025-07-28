@@ -1,11 +1,11 @@
 using TherapyTools.Application.Common.Interfaces;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Represents an event model for an aggregate, including its unique identifier.
 /// </summary>
-public class AggregateEventModelType : InterfaceType<IAggregateEventModel>
+public sealed class AggregateEventModelTypeDefinition : InterfaceType<IAggregateEventModel>
 {
     protected override void Configure(IInterfaceTypeDescriptor<IAggregateEventModel> descriptor)
     {

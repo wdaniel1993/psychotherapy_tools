@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.DataAccess;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Represents a goal in a therapy plan, including its title and description.
 /// </summary>
-public class GoalModelType : ObjectType<GoalModel>
+public sealed class GoalModelTypeDefinition : ObjectType<GoalModel>
 {
     protected override void Configure(IObjectTypeDescriptor<GoalModel> descriptor)
     {

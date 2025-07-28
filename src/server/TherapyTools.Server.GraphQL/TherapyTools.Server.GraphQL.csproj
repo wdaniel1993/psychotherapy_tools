@@ -26,8 +26,4 @@
 		<ProjectReference Include="..\..\common\TherapyTools.Domain.Common\TherapyTools.Domain.Common.csproj" />
 		<ProjectReference Include="..\TherapyTools.Infrastructure.InProcess\TherapyTools.Infrastructure.InProcess.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Types\" />
-	</ItemGroup>
 </Project>

@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.DataAccess;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Event model for when a therapy plan is discarded.
 /// </summary>
-public class TherapyPlanDiscardedEventModelType : ObjectType<TherapyPlanDiscardedEventModel>
+public sealed class TherapyPlanDiscardedEventModelTypeDefinition : ObjectType<TherapyPlanDiscardedEventModel>
 {
     protected override void Configure(IObjectTypeDescriptor<TherapyPlanDiscardedEventModel> descriptor)
     {

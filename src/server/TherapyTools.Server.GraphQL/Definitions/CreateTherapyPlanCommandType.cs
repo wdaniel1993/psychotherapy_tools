@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.Commands;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Command to create a new therapy plan.
 /// </summary>
-public class CreateTherapyPlanCommandType : ObjectType<CreateTherapyPlanCommand>
+public sealed class CreateTherapyPlanCommandTypeDefinition : ObjectType<CreateTherapyPlanCommand>
 {
     protected override void Configure(IObjectTypeDescriptor<CreateTherapyPlanCommand> descriptor)
     {

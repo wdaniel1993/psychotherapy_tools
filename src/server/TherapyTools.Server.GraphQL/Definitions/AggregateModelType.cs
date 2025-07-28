@@ -1,6 +1,6 @@
 using TherapyTools.Application.Common.Interfaces;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Represents an aggregate model with a unique identifier.

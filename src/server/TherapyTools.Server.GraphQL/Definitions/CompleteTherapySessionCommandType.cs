@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.Commands;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Command to complete a therapy session.
 /// </summary>
-public class CompleteTherapySessionCommandType : ObjectType<CompleteTherapySessionCommand>
+public sealed class CompleteTherapySessionCommandTypeDefinition : ObjectType<CompleteTherapySessionCommand>
 {
     protected override void Configure(IObjectTypeDescriptor<CompleteTherapySessionCommand> descriptor)
     {

@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.DataAccess;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Represents a time slot with a start and end date/time.
 /// </summary>
-public class TimeSlotModelType : ObjectType<TimeSlotModel>
+public sealed class TimeSlotModelTypeDefinition : ObjectType<TimeSlotModel>
 {
     protected override void Configure(IObjectTypeDescriptor<TimeSlotModel> descriptor)
     {

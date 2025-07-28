@@ -1,11 +1,11 @@
 using TherapyTools.Application.TherapyManagement.DataAccess;
 
-namespace TherapyTools.Server.GraphQL.Types;
+namespace TherapyTools.Server.GraphQL.Definitions;
 
 /// <summary>
 /// Event model for when a therapy plan is activated.
 /// </summary>
-public class TherapyPlanActivatedEventModelType : ObjectType<TherapyPlanActivatedEventModel>
+public sealed class TherapyPlanActivatedEventModelTypeDefinition : ObjectType<TherapyPlanActivatedEventModel>
 {
     protected override void Configure(IObjectTypeDescriptor<TherapyPlanActivatedEventModel> descriptor)
     {
